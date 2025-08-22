@@ -69,7 +69,7 @@
                 <td><img src="perro2.jpg" alt="Perro" width="120"></td>
             </tr>
             <tr>
-                <td>2025-08-18 10:00</td>
+                <td>2025-08-19 10:00</td>
                 <td>Santiago</td>
                 <td>Beauchef 850, terraza</td>
                 <td>1 gato<br>1 meses</td>
@@ -77,21 +77,28 @@
             </tr>
         </tbody>
     </table>
-</body>
 <script>
 
 
 const cargarFormulario = () => {
      window.location.href = 'formulario_aviso.html'
 }    
+const cargarEstadisticas = () => {
+     window.location.href = 'estadisticas.html'
+}
+
+const cargarListado = () => {
+     window.location.href = 'listado.html'
+}
 
 let addBtn = document.getElementById("btn-agregar-aviso");
 addBtn.addEventListener("click", cargarFormulario);
 
 let btnLista = document.getElementById("btn-listado");
-btnLista.addEventListener("click", mostrarListado);
+btnLista.addEventListener("click", cargarListado);
 
 let btnEstadisticas = document.getElementById("btn-estadisticas");
-btnEstadisticas.addEventListener("click", mostrarEstadisticas);
-</script>
+btnEstadisticas.addEventListener("click", cargarEstadisticas);
+</script>    
+</body>
 </html>

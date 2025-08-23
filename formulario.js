@@ -57,7 +57,7 @@ const containerContactos = document.getElementById("contactos-container");
 
 containerContactos.addEventListener("change", (e) => {
     if (e.target.classList.contains("contacto-select")) {
-        const input = e.target.nextElementSibling; // input está justo después
+        const input = e.target.nextElementSibling; 
         input.style.display = e.target.value ? "inline-block" : "none";
     }
 });
@@ -136,8 +136,8 @@ const validarForm = () => {
     // validación de los id o url informados
     id_url_Input.forEach(input => {
         if (input.offsetParent !== null) {
-            const valor = input.value.trim();
-            if (valor.length < 4 || valor.length > 50) {                
+            const id_url = input.value.trim();
+            if (!validadorContacto(id_url)) {
                 input.style.borderColor = "red";
             } else {
                 input.style.borderColor = "";

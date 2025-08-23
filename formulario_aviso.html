@@ -8,7 +8,7 @@
     <h1>Formulario</h1>
     <form class="formulario" id="aviso-formulario">
 
-        
+
         <h2><b>¿Dónde?:</b></h2>
         <div id="region-input" class="grupo-input">
             <label for="region">Región:</label>
@@ -61,7 +61,7 @@
 
 
         <h2><b>¿Qué mascota ofrece en adopción?</b></h2>
-        <div id="tipo-input" class="grupo-input" style="display: flex; align-items: center; gap: 10px;">
+        <div id="tipo-mascota-input" class="grupo-input" style="display: inline-flex; align-items: center; gap: 10px;">
             <p style="margin: 0;">Tipo:</p>
             <input type="radio" id="gato" name="mascota" value="gato" required>
             <label for="gato">Gato</label>
@@ -76,7 +76,7 @@
             <label for="edad">Edad</label>
             <input id="edad" name="edad" type="number" required min="1" step="1">
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div id="tipo-unidad-input" style="display: inline-flex; align-items: center; gap: 10px;">
             <p style="margin: 0;">Unidad de medida edad:</p>
             <input type="radio" id="meses" name="unidad" value="meses" required>
             <label for="meses">Meses</label>
@@ -91,9 +91,17 @@
             <label for="descripcion" style="display: block; margin-bottom: 5px;">Descripción:</label>
             <textarea id="descripcion" name="descripcion" cols="50" rows="10"></textarea>
         </div>
+        <div id="fotos-container" style="display: inline-block; flex-direction: column; gap: 10px;">
+        <div id="fotos-container" style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="foto-item" style="display: flex; align-items: center; gap: 10px; padding: 5px;">
+                <input type="file" class="foto-input" accept="image/*" required>
+                <button type="button" class="agregar-foto">Agregar otra foto</button>
+            </div>
+        </div>
+        </div>
         <div class="botones">
           <button type="button" id="enviar">
-            Enviar formulario
+            Agregar este aviso de adopción
           </button>
         </div>
     </form>

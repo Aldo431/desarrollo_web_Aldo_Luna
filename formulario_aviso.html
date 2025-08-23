@@ -6,4 +6,97 @@
 </head>
 <body>
     <h1>Formulario</h1>
+    <form class="formulario" id="aviso-formulario">
+
+        
+        <h2><b>¿Dónde?:</b></h2>
+        <div id="region-input" class="grupo-input">
+            <label for="region">Región:</label>
+            <select id="region" name="region" required>
+                <option value="" disabled selected>Seleccione una región</option>
+            </select>
+        </div>
+        <div id="comuna-input" class="grupo-input">
+            <label for="comuna">Comuna:</label>
+            <select id="comuna" name="comuna" required>
+                <option value="" disabled selected>Seleccione una comuna</option>
+            </select>
+        </div>
+        <div id="sector-input" class="grupo-input">
+            <label for="sector">Sector</label>
+            <input id="sector" name="sector" type="text" maxlength="100">
+        </div>
+
+
+        <h2><b>¿Contacto de esta publicación?</b></h2>
+        <div id="nombre-input" class="grupo-input">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" minlength="3" maxlength="200" required>
+        </div>
+        <div id="mail-input" class="grupo-input">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" maxlength="100" required>
+        </div>
+        <div id="tel-input" class="grupo-input" style="display: flex; align-items: center; gap: 10px;">
+          <label for="tel">Número de celular</label>
+          <input id="tel" name="tel" type="tel" maxlength="13" required>
+          <p style="font-size: 0.8em; color: gray;">Formato: +569.12345678</p>
+        </div>
+        <div id="contactos-container">
+         <div class="contacto-item">
+            <label>Contactar por</label>
+            <select class="contacto-select" required>
+            <option value="" disabled selected>Seleccione una opción</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="telegram">Telegram</option>
+            <option value="x">X</option>
+            <option value="instagram">Instagram</option>
+            <option value="tiktok">TikTok</option>
+            <option value="otra">Otra</option>
+            </select>
+            <input type="text" class="contacto-info" id = "contacto-info" placeholder="ID o URL" style="display:none; margin-left:10px;" minlength="4" maxlength="50">
+            <button type="button" class="agregar-contacto" style="margin-left:5px;">+</button>
+         </div>
+        </div>
+
+
+        <h2><b>¿Qué mascota ofrece en adopción?</b></h2>
+        <div id="tipo-input" class="grupo-input" style="display: flex; align-items: center; gap: 10px;">
+            <p style="margin: 0;">Tipo:</p>
+            <input type="radio" id="gato" name="mascota" value="gato" required>
+            <label for="gato">Gato</label>
+            <input type="radio" id="perro" name="mascota" value="perro">
+            <label for="perro">Perro</label>
+        </div>
+        <div id="cantidad-input" class="grupo-input">
+            <label for="cantidad">Cantidad</label>
+            <input type="number" id="cantidad" name="cantidad"  required min="1" step="1">
+        </div>
+        <div id="edad-input" class="grupo-input">
+            <label for="edad">Edad</label>
+            <input id="edad" name="edad" type="number" required min="1" step="1">
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <p style="margin: 0;">Unidad de medida edad:</p>
+            <input type="radio" id="meses" name="unidad" value="meses" required>
+            <label for="meses">Meses</label>
+            <input type="radio" id="años" name="unidad" value="años">
+            <label for="años">Años</label>
+        </div>
+        <div id="fecha-disponible-input" class="grupo-input">
+            <label for="fecha-disponible">Fecha de disponibilidad para entrega</label>
+            <input type="datetime-local" id="fecha-disponible" name="fecha-disponible" required>
+        </div>
+        <div id="descripcion-input" class="grupo-input">
+            <label for="descripcion" style="display: block; margin-bottom: 5px;">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" cols="50" rows="10"></textarea>
+        </div>
+        <div class="botones">
+          <button type="button" id="enviar">
+            Enviar formulario
+          </button>
+        </div>
+    </form>
+    <script lang="javascript" src="formulario.js"></script>
 </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Aviso</title>
+</head>
+<body>
+    <h1>“¿Está seguro que desea agregar este aviso de adopción?</h1>
+    <div>
+        <button type="button" id="confirmar">
+        Sí, estoy seguro
+        </button>
+        <button type="button" id="rechazar">
+        No, no estoy seguro, quiero volver al formulario
+        </button>
+    </div>
+<script>
+const confirmar = () => {
+    alert("Hemos recibido la información de adopción, muchas gracias y suerte!");
+    if (window.opener) {
+        window.opener.location.href = "index.html";
+    }
+    window.close();
+}
+const rechazar = () => {
+    window.close();
+}   
+let btnConfirmar = document.getElementById("confirmar");
+btnConfirmar.addEventListener("click", confirmar);
+
+let btnRechazar = document.getElementById("rechazar");
+btnRechazar.addEventListener("click", rechazar);
+</script>
+</body>

@@ -3,23 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Portal</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        img {
-            max-width: 150px;
-        }
-    </style>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
     <h1>Bienvenido al Portal de adopción</h1>
@@ -81,14 +65,14 @@
 
 
 const cargarFormulario = () => {
-     window.location.href = 'formulario_aviso.html'
+    window.location.href = "formulario_aviso.html"
 }    
 const cargarEstadisticas = () => {
-     window.location.href = 'estadisticas.html'
+    window.location.href = "estadisticas.html"
 }
 
 const cargarListado = () => {
-     window.location.href = 'listado.html'
+    window.location.href = "listado.html"
 }
 
 let addBtn = document.getElementById("btn-agregar-aviso");

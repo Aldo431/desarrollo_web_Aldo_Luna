@@ -3,7 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Listado</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <h1>Listado</h1>
+    <h1>Listado</h1>   
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha publicación</th>
+                <th>Fecha de entrega</th>
+                <th>Comuna</th>
+                <th>Sector</th>
+                <th>Cantidad Tipo <br> edad</th>
+                <th>Nombre <br> Contacto</th>
+                <th>Total fotos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
+                <td>2025-08-22 12:00</td>
+                <td>2025-08-23 12:00</td>
+                <td>Santiago</td>
+                <td>Beauchef 850, terraza</td>
+                <td>1 gato<br>2 meses</td>
+                <td>Valentina<br>+569.12345678</td>
+                <td><img src="img/gatito1.jpg" alt="Gato" width="120"></td>
+            </tr>
+            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
+                <td>2025-08-21 18:00</td>
+                <td>2025-08-23 12:00</td>
+                <td>Ñuñoa</td>
+                <td>Plaza</td>
+                <td>1 perro<br>2 meses</td>
+                <td>Diego<br>+569.12345678</td>
+                <td><img src="img/perrito1.jpg" alt="Perro" width="120"></td>
+            </tr>
+            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
+                <td>2025-08-20 12:23</td>
+                <td>2025-08-23 12:00</td>
+                <td>Providencia</td>
+                <td>Plaza</td>
+                <td>1 gato<br>8 meses</td>
+                <td>Geraldine<br>+569.12345678</td>
+                <td><img src="img/gato2.png" alt="Gato" width="120"></td>
+            </tr>
+            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
+                <td>2025-08-19 13:45</td>
+                <td>2025-08-23 12:00</td>
+                <td>Ñuñoa</td>
+                <td>Plaza</td>
+                <td>1 perro<br>12 meses</td>
+                <td>Aldo<br>+569.12345678</td>
+                <td><img src="img/perro2.jpg" alt="Perro" width="120"></td>
+            </tr>
+            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
+                <td>2025-08-19 10:00</td>
+                <td>2025-08-23 12:00</td>
+                <td>Santiago</td>
+                <td>Beauchef 850, terraza</td>
+                <td>1 gato<br>1 meses</td>
+                <td>Pablo<br>+569.12345678</td>
+                <td><img src="img/gato3.jpg" alt="Gato" width="120"></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+</html>

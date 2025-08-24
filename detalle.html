@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle</title>
+</head>
+<body>
+    <h1>Detalle</h1>
+    <div class="detalle">
+
+    <img src="img/perro2.jpg" alt="Perro" width="320" height="240" id="imagenDetalle" style="cursor:pointer;">
+    <button id="cerrarBtn" hidden>Cerrar</button>
+
+    <h2>Información del Aviso</h2>
+    <p><strong>Fecha de publicación:</strong> 2025-08-19 13:45</p>
+    <p><strong>Fecha de entrega:</strong> 2025-08-23 12:00</p>
+
+    <h3>Ubicación</h3>
+    <p><strong>Comuna:</strong> Ñuñoa</p>
+    <p><strong>Sector:</strong> Plaza</p>
+
+    <h3>Mascota</h3>
+    <p><strong>Cantidad y edad:</strong> 1 perro, 12 meses</p>
+
+    <h3>Contacto</h3>
+    <p><strong>Nombre:</strong> Aldo</p>
+    <p><strong>Teléfono:</strong> +569.12345678</p>
+
+    <h3>Descripción</h3>
+    <p>Ella se llama muki, es una perrita amorosa que esta buscando un hogar, contactame si estas interesado en adoptarla.</p>
+    </div>
+    <div>
+        <button type="button" id="listado">
+        Volver al listado
+        </button>
+        <button type="button" id="index">
+        Volver al inicio
+        </button>
+    </div>
+<script>
+
+const img = document.getElementById("imagenDetalle");
+const btnCerrar = document.getElementById("cerrarBtn");
+const anchoOriginal = img.width;
+const altoOriginal = img.height;
+
+img.addEventListener("click", () => {
+    img.style.width = "800px";
+    img.style.height = "600px";
+    btnCerrar.style.display = "block";
+    btnCerrar.style.position = "absolute";
+    btnCerrar.hidden = false;
+});
+
+btnCerrar.addEventListener("click", () => {
+    img.style.width = anchoOriginal + "px";
+    img.style.height = altoOriginal + "px";
+    btnCerrar.style.display = "none";
+    btnCerrar.hidden = true;
+});
+
+const listado = () => {
+    window.location.href = "listado.html";
+}
+const index = () => {
+    window.location.href = "index.html";
+}   
+let btnListado = document.getElementById("listado");
+btnListado.addEventListener("click", listado);
+
+let btnIndex = document.getElementById("index");
+btnIndex.addEventListener("click", index);
+</script>
+</body>
+</html>

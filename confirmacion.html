@@ -16,11 +16,23 @@
     </div>
 <script>
 const confirmar = () => {
-    alert("Hemos recibido la información de adopción, muchas gracias y suerte!");
-    if (window.opener) {
-        window.opener.location.href = "index.html";
-    }
-    window.close();
+    const mensaje = document.createElement("div");
+    mensaje.textContent = "Hemos recibido la información de adopción, muchas gracias y suerte!";
+    document.body.appendChild(mensaje);
+    mensaje.style.position = "fixed";
+    mensaje.style.top = "20px";
+    mensaje.style.left = "50%";
+    mensaje.style.transform = "translateX(-50%)";
+    mensaje.style.backgroundColor = "lightgreen";
+    mensaje.style.color = "black";
+    mensaje.style.padding = "10px";
+    setTimeout(() => {
+        mensaje.remove();
+        if (window.opener) {
+            window.opener.location.href = "index.html";
+        }
+        window.close();
+    }, 4000);
 }
 const rechazar = () => {
     window.close();

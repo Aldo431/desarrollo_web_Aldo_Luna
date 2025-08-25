@@ -62,7 +62,7 @@ const ComunaInput = document.getElementById("comuna");
 for (const region in regiones) {
     const option = document.createElement("option");
     option.value = region;
-    option.textContent = region
+    option.textContent = region;
     regionInput.appendChild(option);
 }
 
@@ -88,7 +88,11 @@ const containerContactos = document.getElementById("contactos-container");
 containerContactos.addEventListener("change", (e) => {
     if (e.target.classList.contains("contacto-select")) {
         const input = e.target.nextElementSibling; 
-        input.style.display = e.target.value ? "inline-block" : "none";
+        if (e.target.value) {
+            input.style.display = "inline-block";
+        } else {
+            input.style.display = "none";
+        }
     }
 });
 

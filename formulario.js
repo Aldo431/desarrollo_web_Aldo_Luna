@@ -68,7 +68,6 @@ for (const region in regiones) {
 
 // Para actualizar comunas según la región
 regionInput.addEventListener("change", () => {
-    // Limpiar comunas actuales
     ComunaInput.innerHTML = '<option value="" disabled selected>Seleccione una comuna</option>';
 
     const comunas = regiones[regionInput.value] || [];
@@ -80,11 +79,11 @@ regionInput.addEventListener("change", () => {
     });
 });
 
+// Logica para agregar contactos
 const maxContactos = 5;
 const contactoInput = document.getElementById("contacto");
 const infoInput = document.getElementById("contacto-info");
 const containerContactos = document.getElementById("contactos-container");
-
 
 containerContactos.addEventListener("change", (e) => {
     if (e.target.classList.contains("contacto-select")) {
@@ -108,6 +107,7 @@ containerContactos.addEventListener("click", (e) => {
     }
 });
 
+// Logica para la fecha
 const fechaInput = document.getElementById("fecha-disponible");
 const fechaInicio = new Date();
 fechaInicio.setHours(fechaInicio.getHours() + 3);
@@ -121,6 +121,7 @@ const fechaFormateada = `${año}-${mes}-${dia}T${hora}:${minuto}`;
 fechaInput.value = fechaFormateada;
 fechaInput.min = fechaFormateada;
 
+//Logica para agregar fotos
 const maxFotos = 5;
 const fotosContainer = document.getElementById("fotos-container");
 
@@ -137,6 +138,7 @@ fotosContainer.addEventListener("click", (e) => {
     }
 });
 
+// Logica para validar formulario
 const validarForm = () => {
 
     let msg = "";
@@ -269,7 +271,7 @@ const validarForm = () => {
     } else {
         document.getElementById("tipo-unidad-input").style.border = "";
     }
-    
+
     if (!validarFechaDisponible()) {
         msg += "n";
         fechaInput.style.borderColor = "red";        

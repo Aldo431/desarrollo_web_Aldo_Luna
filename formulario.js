@@ -1,4 +1,3 @@
-
 const regiones = {
     "Arica y parinacota": ["Arica", "Camarones", "Putre", "General Lagos"],
     "Tarapaca": ["Iquique", "Alto Hospicio", "Pozo Almonte", "Pica", "Huara", "Camiña", "Colchane"],
@@ -54,62 +53,93 @@ const regiones = {
     ]
 };
 
-// Inputs de region y comuna
+// Inputs de región y comuna
 const regionInput = document.getElementById("region");
-const ComunaInput = document.getElementById("comuna");
+const comunaInput = document.getElementById("comuna");
 
-// Para crear las opciones del select de regiones
-for (const region in regiones) {
-    const option = document.createElement("option");
-    option.value = region;
-    option.textContent = region;
-    regionInput.appendChild(option);
-}
+// Logica para los select de region y comuna
+const poblarRegiones = () => {
+    for (const region in regiones) {
+        const option = document.createElement("option");
+        option.value = region;
+        option.textContent = region;
+        regionInput.appendChild(option);
+    }
+};
 
-// Para actualizar comunas según la región
-regionInput.addEventListener("change", () => {
-    ComunaInput.innerHTML = '<option value="" disabled selected>Seleccione una comuna</option>';
-
+const actualizarComunas = () => {
+    comunaInput.innerHTML = '<option value="" disabled selected>Seleccione una comuna</option>';
     const comunas = regiones[regionInput.value] || [];
     comunas.forEach(comuna => {
         const option = document.createElement("option");
         option.value = comuna;
         option.textContent = comuna;
-        ComunaInput.appendChild(option);
+        comunaInput.appendChild(option);
     });
-});
+};
 
-// Logica para agregar contactos
+regionInput.addEventListener("change", actualizarComunas);
+
+window.onload = () => {
+    poblarRegiones();
+    actualizarComunas(); 
+};
+
+// Lógica para agregar contactos
 const maxContactos = 5;
-const contactoInput = document.getElementById("contacto");
-const infoInput = document.getElementById("contacto-info");
 const containerContactos = document.getElementById("contactos-container");
+
+const cambiarVisibilidadInput = (select) => {
+    const input = select.nextElementSibling;
+    if (select.value) {
+        input.style.display = "inline-block";
+    } else {
+        input.style.display = "none";
+    }
+};
+
+const actualizarBotonesAgregar = () => {
+    const items = containerContactos.querySelectorAll(".contacto-item");
+    items.forEach((item, index) => {
+        const boton = item.querySelector(".agregar-contacto");
+        if (boton) {
+            if (index === items.length - 1 && items.length < maxContactos) {
+                boton.style.display = "inline-block";
+            } else {
+                boton.style.display = "none";
+            }
+        }
+    });
+};
+
+const agregarContacto = () => {
+    const items = containerContactos.querySelectorAll(".contacto-item");
+    if (items.length >= maxContactos) return;
+
+    const nuevoItem = items[0].cloneNode(true);
+    const select = nuevoItem.querySelector(".contacto-select");
+    const input = nuevoItem.querySelector(".contacto-info");
+
+    select.value = "";
+    input.value = "";
+    input.style.display = "none";
+
+    containerContactos.appendChild(nuevoItem);
+    actualizarBotonesAgregar();
+};
 
 containerContactos.addEventListener("change", (e) => {
     if (e.target.classList.contains("contacto-select")) {
-        const input = e.target.nextElementSibling; 
-        if (e.target.value) {
-            input.style.display = "inline-block";
-        } else {
-            input.style.display = "none";
-        }
+        cambiarVisibilidadInput(e.target);
     }
 });
 
 containerContactos.addEventListener("click", (e) => {
     if (e.target.classList.contains("agregar-contacto")) {
-        const items = containerContactos.querySelectorAll(".contacto-item");
-        if (items.length >= maxContactos) {
-            return;
-        }
-        const nuevoItem = items[0].cloneNode(true);
-        nuevoItem.querySelector(".contacto-select").value = "";
-        const nuevoInput = nuevoItem.querySelector(".contacto-info");
-        nuevoInput.value = "";
-        nuevoInput.style.display = "none";
-        containerContactos.appendChild(nuevoItem);
+        agregarContacto();
     }
 });
+
 
 // Logica para la fecha
 const fechaInput = document.getElementById("fecha-disponible");
@@ -125,20 +155,43 @@ const fechaFormateada = `${año}-${mes}-${dia}T${hora}:${minuto}`;
 fechaInput.value = fechaFormateada;
 fechaInput.min = fechaFormateada;
 
-//Logica para agregar fotos
+// Lógica para agregar fotos
 const maxFotos = 5;
 const fotosContainer = document.getElementById("fotos-container");
 
+const agregarFoto = () => {
+    const items = fotosContainer.querySelectorAll(".foto-item");
+
+    if (items.length >= maxFotos) {
+        return;
+    }
+
+    const nuevoItem = items[0].cloneNode(true);
+    const input = nuevoItem.querySelector(".foto-input");
+
+    input.value = "";
+    fotosContainer.appendChild(nuevoItem);
+
+    actualizarBotonesFotos();
+};
+
+const actualizarBotonesFotos = () => {
+    const items = fotosContainer.querySelectorAll(".foto-item");
+    items.forEach((item, index) => {
+        const boton = item.querySelector(".agregar-foto");
+        if (boton) {
+            if (index === items.length - 1 && items.length < maxFotos) {
+                boton.style.display = "inline-block";
+            } else {
+                boton.style.display = "none";
+            }
+        }
+    });
+};
+
 fotosContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("agregar-foto")) {
-        const items = fotosContainer.querySelectorAll(".foto-item");
-        if (items.length >= maxFotos) {
-            return;
-        }
-
-        const nuevoItem = items[0].cloneNode(true);
-        nuevoItem.querySelector(".foto-input").value = ""; 
-        fotosContainer.appendChild(nuevoItem);
+        agregarFoto();
     }
 });
 

@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalle</title>
+    <link rel="stylesheet" type="text/css" href="./estilos.css">
 </head>
 <body>
     <h1>Detalle</h1>
     <div class="detalle">
 
-    <img src="img/perro2.jpg" alt="Perro" width="320" height="240" id="imagenDetalle" style="cursor:pointer;">
-    <button id="cerrarBtn" hidden>Cerrar</button>
+    <div class="imagen-container" style="position: relative; display: inline-block;">
+        <img src="img/perro2.jpg" alt="Perro" width="320" height="240" id="imagenDetalle" style="cursor:pointer;">
+        <button id="cerrarBtn" hidden style="position: absolute; top: 10px; right: 10px;">Cerrar</button>
+    </div>
 
     <h2>Información del Aviso</h2>
     <p><strong>Fecha de publicación:</strong> 2025-08-19 13:45</p>
@@ -47,16 +50,13 @@ const altoOriginal = img.height;
 img.addEventListener("click", () => {
     img.style.width = "800px";
     img.style.height = "600px";
-    btnCerrar.style.display = "block";
-    btnCerrar.style.position = "absolute";
-    btnCerrar.hidden = false;
+    btnCerrar.style.display = "block"; 
 });
 
 btnCerrar.addEventListener("click", () => {
     img.style.width = anchoOriginal + "px";
     img.style.height = altoOriginal + "px";
     btnCerrar.style.display = "none";
-    btnCerrar.hidden = true;
 });
 
 const listado = () => {

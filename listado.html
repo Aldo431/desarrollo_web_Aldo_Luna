@@ -24,10 +24,10 @@
                 <td>2025-08-22 12:00</td>
                 <td>2025-08-23 12:00</td>
                 <td>Santiago</td>
-                <td>Beauchef 850, terraza</td>
-                <td>1 gato<br>2 meses</td>
-                <td>Valentina<br>+569.12345678</td>
-                <td><img src="img/gatito1.jpg" alt="Gato" width="120"></td>
+                <td>Parque O´higgins</td>
+                <td>1 gato<br>2 años</td>
+                <td>Geraldine<br>+569.12345678</td>
+                <td><img src="img/gato4.jpeg" alt="Gato" width="120"></td>
             </tr>
             <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
                 <td>2025-08-21 18:00</td>
@@ -44,7 +44,7 @@
                 <td>Providencia</td>
                 <td>Plaza</td>
                 <td>1 gato<br>8 meses</td>
-                <td>Geraldine<br>+569.12345678</td>
+                <td>Francisca<br>+569.12345678</td>
                 <td><img src="img/gato2.png" alt="Gato" width="120"></td>
             </tr>
             <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
@@ -67,5 +67,15 @@
             </tr>
         </tbody>
     </table>
+    <div>
+        <button type="button" id="btn-volver">Volver al portal</button>
+    </div>
+<script>
+const volverMenu = () => {
+     window.location.href = "index.html";
+}   
+let btnVolver = document.getElementById("btn-volver");
+btnVolver.addEventListener("click", volverMenu);
+</script>        
 </body>
 </html>

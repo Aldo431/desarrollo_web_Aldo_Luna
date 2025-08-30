@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulario de Aviso</title>
+    <link rel="stylesheet" type="text/css" href="./estilos.css">
 </head>
 <body>
-    <h1>Formulario</h1>
+    <div class="form-container"> 
     <form class="formulario" id="aviso-formulario">
-
-
+        <h1>Formulario de aviso</h1>
         <h2><b>¿Dónde?:</b></h2>
         <div id="region-input" class="grupo-input">
             <label for="region">Región:</label>
@@ -61,7 +61,7 @@
 
 
         <h2><b>¿Qué mascota ofrece en adopción?</b></h2>
-        <div id="tipo-mascota-input" class="grupo-input" style="display: inline-flex; align-items: center; gap: 10px;">
+        <div id="tipo-mascota-input">
             <p style="margin: 0;">Tipo:</p>
             <input type="radio" id="gato" name="mascota" value="gato" required>
             <label for="gato">Gato</label>
@@ -105,6 +105,7 @@
           </button>
         </div>
     </form>
+    </div> 
     <script src="formulario.js"></script>
 </body>
 </html>

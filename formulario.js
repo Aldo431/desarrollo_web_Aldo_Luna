@@ -255,11 +255,11 @@ const validarForm = () => {
         regionInput.style.borderColor = "";
     }
 
-    if (!ComunaInput.value) {
+    if (!comunaInput.value) {
         msg += "n";
-        ComunaInput.style.borderColor = "red";
+        comunaInput.style.borderColor = "red";
     } else {
-        ComunaInput.style.borderColor = "";
+        comunaInput.style.borderColor = "";
     }
 
     if (sectorInput.value.length > 100) {

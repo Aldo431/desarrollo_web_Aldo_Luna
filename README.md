@@ -1,7 +1,7 @@
 # Tarea 1 - Desarrollo Web
 
-## github
-Para la tarea se creó la rama Tarea-1 donde se encuentra todos los archivos relacionados con la tarea
+## Github
+Para la tarea se creó la rama Tarea-1 donde se encuentra todos los archivos relacionados con la tarea 1
 
 ## Descripción
 Esta tarea incluye la implementación de una página HTML con CSS.
@@ -13,5 +13,5 @@ Esta tarea incluye la implementación de una página HTML con CSS.
 - Los HTML que requerían poco Código de javascript, tienen el mismo código en el HTML, pero para el caso del formulario, cree un archivo aparte para que quedara más ordenado.
 - Utilicé flexbox para organizar los elementos en el formulario.
 - Agregué comentarios en el código para mayor claridad.
-
+- Cree un css llamado estilos.css para que se utilice en cada HTML de la página.
 

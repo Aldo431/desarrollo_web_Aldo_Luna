@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal de adopción</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Portal de adopción</h1>
+        <a href="{{ url_for('formulario_aviso') }}">Agregar aviso</a>        
+        <a href="{{ url_for('listado') }}">Listado</a>
+        <a href="{{ url_for('estadisticas') }}">Estadísticas</a>
+    </div>
+
+    <!-- Contenido principal -->
+    <section class="main-container">
+        <h2>Últimos 5 avisos de adopción</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha publicación</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo <br> Edad</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aviso in avisos %}
+                <tr>
+                    <td>{{ aviso[0] }}</td> <!-- fecha_publicacion -->
+                    <td>{{ aviso[1] }}</td> <!-- comuna -->
+                    <td>{{ aviso[2] }}</td> <!-- sector -->
+                    <td>{{ aviso[3] }}</td> <!-- cantidad_tipo_edad -->
+                    <td>
+                        <img src="{{ url_for('static', filename='uploads/' ~ aviso[4]) }}" 
+                             alt="Foto aviso" width="120">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Scripts -->
+    <script>
+        const cargarFormulario = () => {
+            window.location.href = "{{ url_for('formulario_aviso') }}"
+        }
+        const cargarEstadisticas = () => {
+            window.location.href = "{{ url_for('estadisticas') }}"
+        }
+        const cargarListado = () => {
+            window.location.href = "{{ url_for('listado') }}"
+        }
+
+        document.getElementById("btn-agregar-aviso")?.addEventListener("click", cargarFormulario);
+        document.getElementById("btn-listado")?.addEventListener("click", cargarListado);
+        document.getElementById("btn-estadisticas")?.addEventListener("click", cargarEstadisticas);
+    </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+{
+    "get_last_avisos": "SELECT a.fecha_ingreso AS fecha_publicacion, c.nombre AS comuna, a.sector, CONCAT(a.cantidad, ' ', a.tipo, ' ', a.edad, a.unidad_medida) AS cantidad_tipo_edad, f.ruta_archivo AS foto FROM aviso_adopcion a JOIN comuna c ON a.comuna_id = c.id JOIN foto f ON f.actividad_id = a.id ORDER BY a.fecha_ingreso DESC LIMIT 5;"
+}

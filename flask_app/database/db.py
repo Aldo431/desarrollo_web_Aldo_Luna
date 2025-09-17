@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey # type: ignore
+from datetime import datetime
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime # type: ignore
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker # type: ignore
 import pymysql # type: ignore
 import json
@@ -17,35 +18,6 @@ SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
-# Borrar
-
-with open('database/querys.json', 'r', encoding='utf-8') as querys:
-    QUERY_DICT = json.load(querys)
-
-
-# -- conn ---
-
-def get_conn():
-	conn = pymysql.connect(
-		db=DB_NAME,
-		user=DB_USERNAME,
-		passwd=DB_PASSWORD,
-		host=DB_HOST,
-		port=DB_PORT,
-		charset=DB_CHARSET
-	)
-	return conn
-
-# -- querys --
-
-def get_last_5_avisos():
-    conn = get_conn()
-    cursor = conn.cursor()
-    cursor.execute(QUERY_DICT["get_last_avisos"], ())
-    avisos = cursor.fetchall()
-    return avisos
-# Borrar
-
 # --- Models ---
 
 class Region(Base):
@@ -54,7 +26,7 @@ class Region(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(255), nullable=False)
 
-    comunas = relationship("Comuna", back_populates="region", cascade="all, delete")
+    comunas = relationship("Comuna", back_populates="region", cascade="all, delete-orphan")
 
 
 class Comuna(Base):
@@ -65,8 +37,49 @@ class Comuna(Base):
     region_id = Column(Integer, ForeignKey('region.id'), nullable=False)
 
     region = relationship("Region", back_populates="comunas")
+    avisos = relationship("AvisoAdopcion", back_populates="comuna", cascade="all, delete-orphan")
     
+class AvisoAdopcion(Base):
+    __tablename__ = 'aviso_adopcion'
 
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    fecha_ingreso = Column(DateTime, nullable=False, default=datetime.utcnow)
+    comuna_id = Column(Integer, ForeignKey('comuna.id'), nullable=False)
+    sector = Column(String(100))
+    nombre = Column(String(200), nullable=False)
+    email = Column(String(100), nullable=False)
+    celular = Column(String(15))
+    tipo = Column(String(10), nullable=False)  
+    cantidad = Column(Integer, nullable=False)
+    edad = Column(Integer, nullable=False)
+    unidad_medida = Column(String(1), nullable=False)  
+    fecha_entrega = Column(DateTime, nullable=False)  
+    descripcion = Column(String(500))
+
+    comuna = relationship("Comuna", back_populates="avisos")
+    fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
+    contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
+
+
+class Foto(Base):
+    __tablename__ = 'foto'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ruta_archivo = Column(String(300), nullable=False)
+    nombre_archivo = Column(String(300), nullable=False)
+    actividad_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
+
+    aviso = relationship("AvisoAdopcion", back_populates="fotos")
+
+class ContactarPor(Base):
+    __tablename__ = 'contactar_por'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(20), nullable=False) 
+    identificador = Column(String(150), nullable=False)
+    actividad_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
+
+    aviso = relationship("AvisoAdopcion", back_populates="contactos")
 
 def get_all_regiones():
     session = SessionLocal()
@@ -85,3 +98,14 @@ def get_comunas_por_region(region_id):
     comunas = session.query(Comuna).filter_by(region_id=region_id).all()
     session.close()
     return comunas	
+
+def get_last_5_avisos():
+    session = SessionLocal()
+    avisos = (
+        session.query(AvisoAdopcion)
+        .order_by(AvisoAdopcion.fecha_ingreso.desc())
+        .limit(5)
+        .all()
+    )
+    session.close()
+    return avisos

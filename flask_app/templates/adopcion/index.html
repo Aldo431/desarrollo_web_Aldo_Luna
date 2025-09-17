@@ -28,13 +28,17 @@
             <tbody>
                 {% for aviso in avisos %}
                 <tr>
-                    <td>{{ aviso[0] }}</td> <!-- fecha_publicacion -->
-                    <td>{{ aviso[1] }}</td> <!-- comuna -->
-                    <td>{{ aviso[2] }}</td> <!-- sector -->
-                    <td>{{ aviso[3] }}</td> <!-- cantidad_tipo_edad -->
+                    <td>{{ aviso.fecha_ingreso.strftime("%Y-%m-%d %H:%M") }}</td>
+                    <td>{{ aviso.comuna.nombre }}</td>
+                    <td>{{ aviso.sector or "-" }}</td>
+                    <td>{{ aviso.cantidad }} {{ aviso.tipo }}, {{ aviso.edad }} {{ aviso.unidad_medida }}</td>
                     <td>
-                        <img src="{{ url_for('static', filename='uploads/' ~ aviso[4]) }}" 
-                             alt="Foto aviso" width="120">
+                        {% if aviso.fotos %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ aviso.fotos[0].nombre_archivo) }}" 
+                                alt="Foto aviso" width="120">
+                        {% else %}
+                            Sin foto
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

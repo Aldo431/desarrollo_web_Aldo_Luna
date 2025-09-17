@@ -23,9 +23,9 @@
             <label for="comuna">Comuna:</label>
             <select id="comuna" name="comuna" required>
                 <option value="" disabled selected>Seleccione una comuna</option>
-            {% for comuna in comunas %}
-                <option value="{{ comuna.id }}" data-region="{{ comuna.region_id }}">{{ comuna.nombre }}</option>
-            {% endfor %}
+                {% for comuna in comunas %}
+                    <option value="{{ comuna.id }}" data-region="{{ comuna.region_id }}">{{ comuna.nombre }}</option>
+                {% endfor %}
             </select>
         </div>
         <div id="sector-input" class="grupo-input">

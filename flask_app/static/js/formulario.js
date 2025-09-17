@@ -3,8 +3,7 @@
 const regionInput = document.getElementById("region");
 const comunaInput = document.getElementById("comuna");
 
-// Logica para los select de region y comuna
-
+// Logica para el select de comuna
 
 Array.from(comunaInput.options).forEach(option => {
     if (option.value) {  

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Listado</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
 <body>
     <h1>Listado</h1>   
@@ -72,7 +72,7 @@
     </div>
 <script>
 const volverMenu = () => {
-     window.location.href = "index.html";
+     window.location.href = "{{ url_for('index') }}";
 }   
 let btnVolver = document.getElementById("btn-volver");
 btnVolver.addEventListener("click", volverMenu);

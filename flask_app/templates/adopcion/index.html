@@ -53,9 +53,14 @@
             window.location.href = "{{ url_for('listado') }}"
         }
 
-        document.getElementById("btn-agregar-aviso")?.addEventListener("click", cargarFormulario);
-        document.getElementById("btn-listado")?.addEventListener("click", cargarListado);
-        document.getElementById("btn-estadisticas")?.addEventListener("click", cargarEstadisticas);
+    let addBtn = document.getElementById("btn-agregar-aviso");
+    addBtn.addEventListener("click", cargarFormulario);
+
+    let btnLista = document.getElementById("btn-listado");
+    btnLista.addEventListener("click", cargarListado);
+
+    let btnEstadisticas = document.getElementById("btn-estadisticas");
+    btnEstadisticas.addEventListener("click", cargarEstadisticas);
     </script>
 </body>
 </html>

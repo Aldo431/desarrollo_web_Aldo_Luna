@@ -346,7 +346,7 @@ const validarForm = () => {
     if (msg === ""){
        isValid = true;
        window.open(
-        "confirmacion.html",   
+        "/confirmacion",   
         "Confirmacion",  
         "width=500,height=300,top=150,left=400,resizable=no"
         );

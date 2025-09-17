@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalle</title>
-    <link rel="stylesheet" type="text/css" href="./estilos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
 <body>
     <h1>Detalle</h1>
@@ -60,10 +60,10 @@ btnCerrar.addEventListener("click", () => {
 });
 
 const listado = () => {
-    window.location.href = "listado.html";
+    window.location.href = "{{ url_for('listado') }}";
 }
 const index = () => {
-    window.location.href = "index.html";
+    window.location.href = "{{ url_for('index') }}";
 }   
 let btnListado = document.getElementById("listado");
 btnListado.addEventListener("click", listado);

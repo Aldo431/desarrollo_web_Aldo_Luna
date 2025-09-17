@@ -19,7 +19,9 @@ def confirmacion():
 @app.route("/formulario_aviso", methods=["GET", "POST"])
 def formulario_aviso(): 
     if request.method == "GET":
-        return render_template("form/formulario_aviso.html")
+        regiones = db.get_all_regiones()
+        comunas = db.get_all_comunas()
+        return render_template("form/formulario_aviso.html", regiones=regiones, comunas=comunas)
 
 @app.route("/estadisticas", methods=["GET"])
 def estadisticas():

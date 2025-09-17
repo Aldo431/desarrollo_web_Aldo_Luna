@@ -1,89 +1,31 @@
-const regiones = {
-    "Arica y parinacota": ["Arica", "Camarones", "Putre", "General Lagos"],
-    "Tarapaca": ["Iquique", "Alto Hospicio", "Pozo Almonte", "Pica", "Huara", "Camiña", "Colchane"],
-    "Antofagasta": ["Antofagasta", "Mejillones", "Taltal", "Calama", "San Pedro de Atacama", "Tocopilla", "María Elena", "Ollagüe", "Sierra Gorda"],
-    "Atacama": ["Copiapó", "Caldera", "Tierra Amarilla", "Vallenar", "Huasco", "Chañaral", "Diego de Almagro", "Freirina", "Alto del Carmen"],
-    "Coquimbo": ["La Serena", "Coquimbo", "Ovalle", "Illapel", "Salamanca", "Vicuña", "Andacollo", "Los Vilos", "Combarbalá", "Punitaqui", "Paihuano", "Río Hurtado", "Monte Patria", "La Higuera", "Mincha"],
-    "Valparaíso": [
-        "Valparaíso", "Viña del Mar", "Quilpué", "Villa Alemana", "San Antonio", "Quillota", "La Calera", "Limache", "Olmué", "Puchuncaví", "Quintero", "Casablanca", "Concón", "Cartagena",
-        "Algarrobo", "El Quisco", "El Tabo", "Juan Fernández", "Petorca", "Cabildo", "Papudo", "La Ligua", "Zapallar", "Putaendo", "Santa María", "San Felipe", "Catemu", "Llay Llay",
-        "Nogales", "Hijuelas", "Isla de Pascua", "Santo Domingo", "Calle Larga", "Rinconada", "San Esteban"
-    ],
-    "Ohiggins": [
-        "Rancagua", "San Fernando", "Rengo", "Machalí", "Pichilemu", "San Vicente", "Santa Cruz", "Requínoa", "Mostazal", "Navidad", "Codegua", "Graneros", "Olivar", "Doñihue", "Coinco",
-        "Coltauco", "Quinta de Tilcoco", "Las Cabras", "Peumo", "Pichidegua", "Malloa", "La Estrella", "Marchigüe", "Litueche", "Paredones", "Peralillo", "Placilla", "Chimbarongo",
-        "Palmilla", "Nancagua", "Pumanque", "Chépica", "Lolol"
-    ],
-    "Maule": [
-        "Talca", "Curicó", "Linares", "Maule", "San Javier", "Constitución", "Parral", "Cauquenes", "Molina", "Teno", "Romeral", "Rauco", "Sagrada Familia", "Hualañé", "Vichuquén", "Licantén",
-        "Río Claro", "Curepto", "Pelarco", "Pencahue", "San Clemente", "Empedrado", "San Rafael", "Colbún", "Villa Alegre", "Yerbas Buenas", "Longaví", "Retiro", "Chanco", "Pelluhue"
-    ],
-    "Ñuble": [
-        "Chillán", "Chillán Viejo", "San Carlos", "Quirihue", "Bulnes", "Coihueco", "Pemuco", "Ñiquén", "Cobquecura", "San Fabián", "Ninhue", "Trehuaco", "San Nicolás", "Portezuelo", "Pinto",
-        "Coelemu", "San Ignacio", "Ránquil", "Quillón", "El Carmen", "Yungay"
-    ],
-    "Biobío": [
-        "Concepción", "Talcahuano", "Hualpén", "Chiguayante", "Los Ángeles", "Coronel", "Lota", "San Pedro de la Paz", "Tomé", "Florida", "Penco", "Hualqui", "Santa Juana", "Cabrero", "Yumbel",
-        "Tucapel", "Antuco", "San Rosendo", "Laja", "Quilleco", "Nacimiento", "Negrete", "Santa Bárbara", "Quilaco", "Mulchén", "Alto Biobío", "Arauco", "Curanilahue", "Los Álamos", "Lebu",
-        "Cañete", "Contulmo", "Tirúa"
-    ],
-    "Araucanía": [
-        "Temuco", "Padre Las Casas", "Villarrica", "Pucón", "Angol", "Nueva Imperial", "Carahue", "Traiguén", "Lautaro", "Victoria", "Cholchol", "Curacautín", "Lonquimay", "Melipeuco", "Cunco",
-        "Perquenco", "Galvarino", "Freire", "Pitrufquén", "Teodoro Schmidt", "Gorbea", "Tolten", "Curarrehue", "Loncoche", "Puerto Saavedra", "Ercilla", "Renaico", "Collipulli", "Los Sauces",
-        "Purén", "Lumaco"
-    ],
-    "Los Ríos": [
-        "Valdivia", "La Unión", "Río Bueno", "Lanco", "Mariquina", "Panguipulli", "Corral", "Paillaco", "Futrono", "Lago Ranco", "Máfil", "Los Lagos"
-    ],
-    "Los Lagos": [
-        "Puerto Montt", "Puerto Varas", "Castro", "Osorno", "Ancud", "Quellón", "Frutillar", "Fresia", "Chaitén", "Puyehue", "Río Negro", "Purranque", "Puerto Octay", "Maullín", "Calbuco",
-        "Cochamó", "Quemchi", "Dalcahue", "Curaco de Vélez", "Chonchi", "Queilén", "Quinchao", "Puqueldón", "Futaleufú", "Palena", "Hualaihué", "San Pablo", "San Juan"
-    ],
-    "Aysén": [
-        "Coyhaique", "Puerto Aysén", "Chile Chico", "Cisnes", "Guaitecas", "Lago Verde", "Río Ibáñez", "Cochrane", "Tortel", "O’Higgins"
-    ],
-    "Magallanes": [
-        "Punta Arenas", "Puerto Natales", "Porvenir", "Puerto Williams", "Torres del Paine", "Laguna Blanca", "San Gregorio", "Río Verde", "Primavera", "Timaukel", "Antártica"
-    ],
-    "Metropolitana": [
-        "Santiago", "Providencia", "Ñuñoa", "Las Condes", "Maipú", "La Florida", "Puente Alto", "La Reina", "Vitacura", "Lo Barnechea", "Pedro Aguirre Cerda", "San Miguel", "Pudahuel",
-        "Peñalolén", "La Granja", "Macul", "Recoleta", "Quinta Normal", "San Joaquín", "San Ramón", "Cerrillos", "El Bosque", "Huechuraba", "Independencia", "La Cisterna", "Lo Espejo", "Lo Prado",
-        "Cerro Navia", "Estación Central", "Peñaflor", "San Bernardo", "Talagante", "Buin", "Calera de Tango", "Padre Hurtado", "Tiltil", "Colina", "Lampa", "Conchalí", "Quilicura", "Renca",
-        "San José de Maipo", "Pirque", "Isla de Maipo", "Curacaví", "María Pinto", "Melipilla", "San Pedro", "Alhué", "El Monte"
-    ]
-};
 
 // Inputs de región y comuna
 const regionInput = document.getElementById("region");
 const comunaInput = document.getElementById("comuna");
 
 // Logica para los select de region y comuna
-const poblarRegiones = () => {
-    for (const region in regiones) {
-        const option = document.createElement("option");
-        option.value = region;
-        option.textContent = region;
-        regionInput.appendChild(option);
+
+
+Array.from(comunaInput.options).forEach(option => {
+    if (option.value) {  
+        option.style.display = "none";
     }
-};
+});
 
-const actualizarComunas = () => {
-    comunaInput.innerHTML = '<option value="" disabled selected>Seleccione una comuna</option>';
-    const comunas = regiones[regionInput.value] || [];
-    comunas.forEach(comuna => {
-        const option = document.createElement("option");
-        option.value = comuna;
-        option.textContent = comuna;
-        comunaInput.appendChild(option);
+regionInput.addEventListener("change", () => {
+    const regionId = regionInput.value;
+
+    Array.from(comunaInput.options).forEach(option => {
+        if (!option.value) return; 
+        if (option.dataset.region == regionId) {
+            option.style.display = "block";
+        } else {
+            option.style.display = "none";
+        }
     });
-};
 
-regionInput.addEventListener("change", actualizarComunas);
-
-window.onload = () => {
-    poblarRegiones();
-    actualizarComunas(); 
-};
+    comunaInput.selectedIndex = 0;
+});
 
 // Lógica para agregar contactos
 const maxContactos = 5;

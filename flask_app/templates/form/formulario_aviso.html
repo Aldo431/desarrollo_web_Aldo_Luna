@@ -14,12 +14,18 @@
             <label for="region">Región:</label>
             <select id="region" name="region" required>
                 <option value="" disabled selected>Seleccione una región</option>
+                {% for region in regiones %}
+                    <option value="{{ region.id }}">{{ region.nombre }}</option>
+                {% endfor %}
             </select>
         </div>
         <div id="comuna-input" class="grupo-input">
             <label for="comuna">Comuna:</label>
             <select id="comuna" name="comuna" required>
                 <option value="" disabled selected>Seleccione una comuna</option>
+            {% for comuna in comunas %}
+                <option value="{{ comuna.id }}" data-region="{{ comuna.region_id }}">{{ comuna.nombre }}</option>
+            {% endfor %}
             </select>
         </div>
         <div id="sector-input" class="grupo-input">
@@ -105,7 +111,7 @@
           </button>
         </div>
     </form>
-    </div> 
+    </div>
     <script src="{{ url_for('static', filename='js/formulario.js') }}"></script>
 </body>
 </html>

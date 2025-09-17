@@ -1,0 +1,23 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entorno virtual (dentro de flask_app)
+flask_app/venv/
+
+# Variables de entorno
+*.env
+
+# Archivos de logs
+*.log
+
+# Configuración de IDE
+.vscode/
+.idea/
+*.swp
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

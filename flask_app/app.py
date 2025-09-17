@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, session # 
 from database import db
 from werkzeug.utils import secure_filename # pyright: ignore[reportMissingImports]
 import hashlib
-import filetype # pyright: ignore[reportMissingImports]
+import filetype 
 import os
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -12,16 +12,16 @@ app = Flask(__name__)
 app.secret_key = "s3cr3t_k3y"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route("/formulario_aviso", methods=["GET"])
+@app.route("/formulario_aviso", methods=["GET", "POST"])
 def formulario_aviso(): 
     return render_template("adopcion/formulario_aviso.html")
 
-@app.route("/estadisticas")
+@app.route("/estadisticas", methods=["GET"])
 def estadisticas():
     return render_template("adopcion/estadisticas.html")
 
 
-@app.route("/listado")
+@app.route("/listado", methods=["GET"])
 def listado():
     return render_template("adopcion/listado.html")
 

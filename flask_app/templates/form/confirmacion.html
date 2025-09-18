@@ -16,7 +16,11 @@
         </button>
     </div>
 <script>
+
 const confirmar = () => {
+    if (window.opener && !window.opener.closed) {
+        window.opener.document.getElementById("aviso-formulario").submit();
+    }
     const mensaje = document.createElement("div");
     mensaje.textContent = "Hemos recibido la información de adopción, muchas gracias y suerte!";
     document.body.appendChild(mensaje);
@@ -27,13 +31,18 @@ const confirmar = () => {
     mensaje.style.backgroundColor = "lightgreen";
     mensaje.style.color = "black";
     mensaje.style.padding = "10px";
+    
     setTimeout(() => {
         mensaje.remove();
-        if (window.opener) {
-            window.opener.location.href = "{{ url_for('index') }}";
-        }
-        window.close();
-    }, 4000);
+        window.close(); 
+    }, 3000);
+    //setTimeout(() => {
+    //    mensaje.remove();
+    //    if (window.opener) {
+    //        window.opener.location.href = "{{ url_for('index') }}";
+    //    }
+    //    window.close();
+    //}, 4000);
 }
 const rechazar = () => {
     window.close();

@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="form-container"> 
-    <form class="formulario" id="aviso-formulario">
+    <form class="formulario" id="aviso-formulario" method="POST" action="{{url_for('post_aviso')}}" enctype="multipart/form-data">
         <h1>Formulario de aviso</h1>
         <h2><b>¿Dónde?:</b></h2>
         <div id="region-input" class="grupo-input">
@@ -60,7 +60,7 @@
             <option value="tiktok">TikTok</option>
             <option value="otra">Otra</option>
             </select>
-            <input type="text" class="contacto-info" id = "contacto-info" placeholder="ID o URL" style="display:none; margin-left:10px;" minlength="4" maxlength="50">
+            <input type="text" class="contacto-info" name="contacto-info[]" id="contacto-info" placeholder="ID o URL" style="display:none; margin-left:10px;" minlength="4" maxlength="50">
             <button type="button" class="agregar-contacto" style="margin-left:5px;">+</button>
          </div>
         </div>
@@ -100,7 +100,7 @@
         <div id="fotos-container" style="display: inline-block; flex-direction: column; gap: 10px;">
         <div id="foto-item" style="display: flex; flex-direction: column; gap: 10px;">
             <div class="foto-item" style="display: flex; align-items: center; gap: 10px; padding: 5px;">
-                <input type="file" class="foto-input" accept="image/*" required>
+                <input type="file" class="foto-input" name="fotos[]" accept="image/*" required>
                 <button type="button" class="agregar-foto">Agregar otra foto</button>
             </div>
         </div>

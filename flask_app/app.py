@@ -16,12 +16,63 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def confirmacion():
     return render_template("form/confirmacion.html")
 
-@app.route("/formulario_aviso", methods=["GET", "POST"])
+@app.route("/formulario_aviso", methods=["GET"])
 def formulario_aviso(): 
     if request.method == "GET":
         regiones = db.get_all_regiones()
         comunas = db.get_all_comunas()
         return render_template("form/formulario_aviso.html", regiones=regiones, comunas=comunas)
+    
+@app.route("/post_aviso", methods=["POST"])
+def post_aviso():       
+    session = db.SessionLocal() 
+    comuna_id = request.form.get("comuna")
+    sector = request.form.get("sector")
+    nombre = request.form.get("nombre")
+    email = request.form.get("email")
+    celular = request.form.get("tel")
+    tipo = request.form.get("mascota")
+    cantidad = int(request.form.get("cantidad"))
+    edad = int(request.form.get("edad"))
+    unidad_medida = request.form.get("unidad")[0]  
+    fecha_entrega = request.form.get("fecha-disponible")
+    descripcion = request.form.get("descripcion")
+
+    aviso = db.AvisoAdopcion(
+        comuna_id=comuna_id,
+        sector=sector,
+        nombre=nombre,
+        email=email,
+        celular=celular,
+        tipo=tipo,
+        cantidad=cantidad,
+        edad=edad,
+        unidad_medida=unidad_medida,
+        fecha_entrega=fecha_entrega,
+        descripcion=descripcion
+    )
+    session.add(aviso)
+    session.commit()
+
+    fotos = request.files.getlist("fotos[]")  
+    for f in fotos:
+        if f.filename:
+            filename = secure_filename(f.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            f.save(filepath)
+            foto = db.Foto(ruta_archivo=filepath, nombre_archivo=filename, aviso=aviso)
+            session.add(foto)
+    session.commit()
+
+    contactos = request.form.getlist("contacto-info[]")  
+    tipos_contacto = request.form.getlist("contacto-tipo[]")  
+    for tipo, ident in zip(tipos_contacto, contactos):
+        if ident:
+            contactar_por = db.ContactarPor(nombre=tipo, identificador=ident, aviso=aviso)
+            session.add(contactar_por)
+    session.commit()
+
+    return redirect(url_for("index"))
 
 @app.route("/estadisticas", methods=["GET"])
 def estadisticas():

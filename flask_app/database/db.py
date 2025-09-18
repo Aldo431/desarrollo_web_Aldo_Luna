@@ -56,10 +56,13 @@ class AvisoAdopcion(Base):
     fecha_entrega = Column(DateTime, nullable=False)  
     descripcion = Column(String(500))
 
-    comuna = relationship("Comuna", back_populates="avisos")
-    fotos = relationship("Foto", back_populates="aviso", cascade="all, delete")
+    comuna = relationship("Comuna", back_populates="avisos",  lazy="joined")
+    fotos = relationship("Foto", back_populates="aviso", cascade="all, delete", lazy="joined")
     contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
-
+    
+    @property 
+    def unidad_medida_texto(self): 
+        return "años" if self.unidad_medida == "a" else "meses"
 
 class Foto(Base):
     __tablename__ = 'foto'
@@ -80,6 +83,8 @@ class ContactarPor(Base):
     actividad_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
 
     aviso = relationship("AvisoAdopcion", back_populates="contactos")
+
+# --- Database Functions ---
 
 def get_all_regiones():
     session = SessionLocal()
@@ -109,3 +114,103 @@ def get_last_5_avisos():
     )
     session.close()
     return avisos
+
+def create_aviso(
+    fecha_ingreso,
+    comuna_id,
+    sector,
+    nombre,
+    email,
+    celular,
+    tipo,
+    cantidad,
+    edad,
+    unidad_medida,
+    fecha_entrega,
+    descripcion
+):
+    session = SessionLocal()
+    nuevo_aviso = AvisoAdopcion(
+        fecha_ingreso=fecha_ingreso,
+        comuna_id=comuna_id,
+        sector=sector,
+        nombre=nombre,
+        email=email,
+        celular=celular,
+        tipo=tipo,
+        cantidad=cantidad,
+        edad=edad,
+        unidad_medida=unidad_medida,
+        fecha_entrega=fecha_entrega,
+        descripcion=descripcion
+    )
+    session.add(nuevo_aviso)
+    session.commit()
+    aviso_id = nuevo_aviso.id
+    session.close()
+    return aviso_id
+
+
+def add_foto(aviso_id, ruta_archivo, nombre_archivo):
+    session = SessionLocal()
+    nueva_foto = Foto(
+        ruta_archivo=ruta_archivo,
+        nombre_archivo=nombre_archivo,
+        actividad_id=aviso_id
+    )
+    session.add(nueva_foto)
+    session.commit()
+    session.close()
+
+
+def add_contacto(aviso_id, nombre, identificador):
+    session = SessionLocal()
+    nuevo_contacto = ContactarPor(
+        nombre=nombre,
+        identificador=identificador,
+        actividad_id=aviso_id
+    )
+    session.add(nuevo_contacto)
+    session.commit()
+    session.close()
+
+def create_aviso_completo(
+    fecha_ingreso,
+    comuna_id,
+    sector,
+    nombre,
+    email,
+    celular,
+    tipo,
+    cantidad,
+    edad,
+    unidad_medida,
+    fecha_entrega,
+    descripcion,
+    fotos=None,
+    contactos=None
+):
+    aviso_id = create_aviso(
+        fecha_ingreso,
+        comuna_id,
+        sector,
+        nombre,
+        email,
+        celular,
+        tipo,
+        cantidad,
+        edad,
+        unidad_medida,
+        fecha_entrega,
+        descripcion
+    )
+
+    if fotos:
+        for nombre_archivo in fotos:
+            add_foto(aviso_id, f"uploads/{nombre_archivo}", nombre_archivo)
+
+    if contactos:
+        for c in contactos:
+            add_contacto(aviso_id, c["nombre"], c["identificador"])
+
+    return aviso_id    

@@ -31,13 +31,12 @@
                     <td>{{ aviso.fecha_ingreso.strftime("%Y-%m-%d %H:%M") }}</td>
                     <td>{{ aviso.comuna.nombre }}</td>
                     <td>{{ aviso.sector or "-" }}</td>
-                    <td>{{ aviso.cantidad }} {{ aviso.tipo }}, {{ aviso.edad }} {{ aviso.unidad_medida }}</td>
+                    <td>{{ aviso.cantidad }} {{ aviso.tipo }}, <br>
+                        {{ aviso.edad }} {{ aviso.unidad_medida_texto }}</td>
                     <td>
                         {% if aviso.fotos %}
                             <img src="{{ url_for('static', filename='uploads/' ~ aviso.fotos[0].nombre_archivo) }}" 
                                 alt="Foto aviso" width="120">
-                        {% else %}
-                            Sin foto
                         {% endif %}
                     </td>
                 </tr>

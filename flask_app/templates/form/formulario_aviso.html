@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
 <body>
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
     <div class="form-container"> 
     <form class="formulario" id="aviso-formulario" method="POST" action="{{url_for('post_aviso')}}" enctype="multipart/form-data">
         <h1>Formulario de aviso</h1>
@@ -13,89 +18,121 @@
         <div id="region-input" class="grupo-input">
             <label for="region">Región:</label>
             <select id="region" name="region" required>
-                <option value="" disabled selected>Seleccione una región</option>
+                <option value="" disabled {% if not region_id %}selected{% endif %}>Seleccione una región</option>
                 {% for region in regiones %}
-                    <option value="{{ region.id }}">{{ region.nombre }}</option>
+                    <option value="{{ region.id }}" {% if region_id == region.id|string %}selected{% endif %}>
+                        {{ region.nombre }}
+                    </option>
                 {% endfor %}
             </select>
         </div>
         <div id="comuna-input" class="grupo-input">
             <label for="comuna">Comuna:</label>
             <select id="comuna" name="comuna" required>
-                <option value="" disabled selected>Seleccione una comuna</option>
+                <option value="" disabled {% if not comuna_id %}selected{% endif %}>Seleccione una comuna</option>
                 {% for comuna in comunas %}
-                    <option value="{{ comuna.id }}" data-region="{{ comuna.region_id }}">{{ comuna.nombre }}</option>
+                    <option value="{{ comuna.id }}" data-region="{{ comuna.region_id }}"
+                        {% if comuna_id == comuna.id|string %}selected{% endif %}>
+                        {{ comuna.nombre }}
+                    </option>
                 {% endfor %}
             </select>
-        </div>
+        </div>  
         <div id="sector-input" class="grupo-input">
             <label for="sector">Sector</label>
-            <input id="sector" name="sector" type="text" maxlength="100">
+            <input id="sector" name="sector" type="text" maxlength="100" value="{{ sector or '' }}">
         </div>
 
 
         <h2><b>¿Contacto de esta publicación?</b></h2>
         <div id="nombre-input" class="grupo-input">
             <label for="nombre">Nombre</label>
-            <input id="nombre" name="nombre" type="text" minlength="3" maxlength="200" required>
+            <input id="nombre" name="nombre" type="text" minlength="3" maxlength="200" required value="{{ nombre or '' }}">
         </div>
         <div id="mail-input" class="grupo-input">
           <label for="email">Email</label>
-          <input id="email" name="email" type="email" maxlength="100" required>
+          <input id="email" name="email" type="email" maxlength="100" required value="{{ email or '' }}">
         </div>
         <div id="tel-input" class="grupo-input" style="display: flex; align-items: center; gap: 10px;">
           <label for="tel">Número de celular</label>
-          <input id="tel" name="tel" type="tel" maxlength="13" required>
+          <input id="tel" name="tel" type="tel" maxlength="13" required value="{{ celular or '' }}">
           <p style="font-size: 0.8em; color: gray;">Formato: +569.12345678</p>
         </div>
         <div id="contactos-container">
-         <div class="contacto-item">
-            <label>Contactar por</label>
-            <select class="contacto-select" required>
-            <option value="" disabled selected>Seleccione una opción</option>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="telegram">Telegram</option>
-            <option value="x">X</option>
-            <option value="instagram">Instagram</option>
-            <option value="tiktok">TikTok</option>
-            <option value="otra">Otra</option>
-            </select>
-            <input type="text" class="contacto-info" name="contacto-info[]" id="contacto-info" placeholder="ID o URL" style="display:none; margin-left:10px;" minlength="4" maxlength="50">
-            <button type="button" class="agregar-contacto" style="margin-left:5px;">+</button>
-         </div>
+            {% if contactos_combinados %}
+                {% for tipo, ident in contactos_combinados %}
+                <div class="contacto-item">
+                    <label>Contactar por</label>
+
+                    <select class="contacto-select" name="contacto-tipo[]">
+                        <option value="" disabled {% if not tipo %}selected{% endif %}>Seleccione una opción</option>
+                        <option value="whatsapp" {% if tipo=='whatsapp' %}selected{% endif %}>WhatsApp</option>
+                        <option value="telegram" {% if tipo=='telegram' %}selected{% endif %}>Telegram</option>
+                        <option value="x" {% if tipo=='x' %}selected{% endif %}>X</option>
+                        <option value="instagram" {% if tipo=='instagram' %}selected{% endif %}>Instagram</option>
+                        <option value="tiktok" {% if tipo=='tiktok' %}selected{% endif %}>TikTok</option>
+                        <option value="otra" {% if tipo=='otra' %}selected{% endif %}>Otra</option>
+                    </select>
+
+            <input type="text"
+            class="contacto-info {{ 'mostrar' if ident else 'ocultar' }}"
+            name="contacto-info[]"
+            value="{{ ident or '' }}"
+            minlength="4" maxlength="50">
+
+                    <button type="button" class="agregar-contacto" style="margin-left:5px;">+</button>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Si no hay contactos previos, mostramos uno vacío -->
+                <div class="contacto-item">
+                    <label>Contactar por</label>
+                    <select class="contacto-select" name="contacto-tipo[]">
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="x">X</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="otra">Otra</option>
+                    </select>
+                    <input type="text" class="contacto-info" name="contacto-info[]" minlength="4" maxlength="50" style="display:none; margin-left:10px;">
+                    <button type="button" class="agregar-contacto" style="margin-left:5px;">+</button>
+                </div>
+            {% endif %}
         </div>
 
 
         <h2><b>¿Qué mascota ofrece en adopción?</b></h2>
         <div id="tipo-mascota-input">
             <p style="margin: 0;">Tipo:</p>
-            <input type="radio" id="gato" name="mascota" value="gato" required>
+            <input type="radio" id="gato" name="mascota" value="gato" {% if tipo == 'gato' %}checked{% endif %}>
             <label for="gato">Gato</label>
-            <input type="radio" id="perro" name="mascota" value="perro">
+            <input type="radio" id="perro" name="mascota" value="perro" {% if tipo == 'perro' %}checked{% endif %}>
             <label for="perro">Perro</label>
         </div>
         <div id="cantidad-input" class="grupo-input">
             <label for="cantidad">Cantidad</label>
-            <input type="number" id="cantidad" name="cantidad"  required min="1" step="1">
+            <input type="number" id="cantidad" name="cantidad"  required min="1" step="1" value="{{ cantidad or '' }}">
         </div>
         <div id="edad-input" class="grupo-input">
             <label for="edad">Edad</label>
-            <input id="edad" name="edad" type="number" required min="1" step="1">
+            <input id="edad" name="edad" type="number" required min="1" step="1" value="{{ edad or '' }}">
         </div>
         <div id="tipo-unidad-input" style="display: inline-flex; align-items: center; gap: 10px;">
             <p style="margin: 0;">Unidad de medida edad:</p>
-            <input type="radio" id="meses" name="unidad" value="meses" required>
+            <input type="radio" id="meses" name="unidad" value="meses" {% if unidad_medida == 'm' %}checked{% endif %}>
             <label for="meses">Meses</label>
-            <input type="radio" id="años" name="unidad" value="años">
+            <input type="radio" id="años" name="unidad" value="años" {% if unidad_medida == 'a' %}checked{% endif %}>
             <label for="años">Años</label>
         </div>
         <div id="fecha-disponible-input" class="grupo-input">
             <label for="fecha-disponible">Fecha de disponibilidad para entrega</label>
-            <input type="datetime-local" id="fecha-disponible" name="fecha-disponible" required>
+            <input type="datetime-local" id="fecha-disponible" name="fecha-disponible" required value="{{ fecha_entrega or '' }}">
         </div>
         <div id="descripcion-input" class="grupo-input">
             <label for="descripcion" style="display: block; margin-bottom: 5px;">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" cols="50" rows="10"></textarea>
+            <textarea id="descripcion" name="descripcion" cols="50" rows="10">{{ descripcion or '' }}</textarea>
         </div>
         <div id="fotos-container" style="display: inline-block; flex-direction: column; gap: 10px;">
         <div id="foto-item" style="display: flex; flex-direction: column; gap: 10px;">

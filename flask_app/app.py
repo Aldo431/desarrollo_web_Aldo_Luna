@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template, redirect, url_for, session # pyright: ignore[reportMissingImports]
+from utils.validations import validate_conf_img
 from database import db
 from werkzeug.utils import secure_filename # pyright: ignore[reportMissingImports]
+from datetime import datetime
 import hashlib
 import filetype  # pyright: ignore[reportMissingImports]
 import os
@@ -22,10 +24,11 @@ def formulario_aviso():
         regiones = db.get_all_regiones()
         comunas = db.get_all_comunas()
         return render_template("form/formulario_aviso.html", regiones=regiones, comunas=comunas)
-    
+
 @app.route("/post_aviso", methods=["POST"])
 def post_aviso():       
     session = db.SessionLocal() 
+    region_id = request.form.get("region")
     comuna_id = request.form.get("comuna")
     sector = request.form.get("sector")
     nombre = request.form.get("nombre")
@@ -37,7 +40,38 @@ def post_aviso():
     unidad_medida = request.form.get("unidad")[0]  
     fecha_entrega = request.form.get("fecha-disponible")
     descripcion = request.form.get("descripcion")
+    contactos = request.form.getlist("contacto-info[]")
+    tipos_contacto = request.form.getlist("contacto-tipo[]")
+    contactos_combinados = list(zip(tipos_contacto, contactos))
+    error = ""
 
+    dt = datetime.strptime(fecha_entrega, "%Y-%m-%dT%H:%M")
+    fecha_entrega = dt.strftime("%Y-%m-%dT%H:%M")
+    fotos = request.files.getlist("fotos[]")
+    for f in fotos:
+        if f and not validate_conf_img(f):
+            session.close()
+            error = "Una de las fotos no es válida. Solo se permiten imágenes (png, jpg, jpeg)."
+            return render_template(
+                "form/formulario_aviso.html",
+                error=error,
+                region_id=region_id,
+                comuna_id=comuna_id,
+                sector=sector,
+                nombre=nombre,
+                email=email,
+                celular=celular,
+                tipo=tipo,
+                cantidad=cantidad,
+                edad=edad,
+                unidad_medida=unidad_medida,
+                fecha_entrega=fecha_entrega,
+                descripcion=descripcion,
+                regiones=db.get_all_regiones(),
+                comunas=db.get_all_comunas(),
+                contactos_combinados=contactos_combinados
+            )
+        
     aviso = db.AvisoAdopcion(
         comuna_id=comuna_id,
         sector=sector,
@@ -52,8 +86,8 @@ def post_aviso():
         descripcion=descripcion
     )
     session.add(aviso)
-    session.commit()
-
+    session.commit()    
+        
     fotos = request.files.getlist("fotos[]")  
     for f in fotos:
         if f.filename:

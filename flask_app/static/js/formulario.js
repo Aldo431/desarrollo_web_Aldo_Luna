@@ -82,19 +82,23 @@ containerContactos.addEventListener("click", (e) => {
 });
 
 
-// Logica para la fecha
+// Lógica para la fecha
 const fechaInput = document.getElementById("fecha-disponible");
-const fechaInicio = new Date();
-fechaInicio.setHours(fechaInicio.getHours() + 3);
 
-const año = fechaInicio.getFullYear();
-const mes = String(fechaInicio.getMonth() + 1).padStart(2, '0');
-const dia = String(fechaInicio.getDate()).padStart(2, '0');
-const hora = String(fechaInicio.getHours()).padStart(2, '0');
-const minuto = String(fechaInicio.getMinutes()).padStart(2, '0');
-const fechaFormateada = `${año}-${mes}-${dia}T${hora}:${minuto}`;
-fechaInput.value = fechaFormateada;
-fechaInput.min = fechaFormateada;
+if (!fechaInput.value) {   
+    const fechaInicio = new Date();
+    fechaInicio.setHours(fechaInicio.getHours() + 3);
+
+    const año = fechaInicio.getFullYear();
+    const mes = String(fechaInicio.getMonth() + 1).padStart(2, '0');
+    const dia = String(fechaInicio.getDate()).padStart(2, '0');
+    const hora = String(fechaInicio.getHours()).padStart(2, '0');
+    const minuto = String(fechaInicio.getMinutes()).padStart(2, '0');
+    const fechaFormateada = `${año}-${mes}-${dia}T${hora}:${minuto}`;
+
+    fechaInput.value = fechaFormateada;
+    fechaInput.min = fechaFormateada;
+}
 
 // Lógica para agregar fotos
 const maxFotos = 5;

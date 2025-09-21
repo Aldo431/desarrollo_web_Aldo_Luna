@@ -20,22 +20,8 @@
 const confirmar = () => {
     if (window.opener && !window.opener.closed) {
         window.opener.document.getElementById("aviso-formulario").submit();
-    }
-    const mensaje = document.createElement("div");
-    mensaje.textContent = "Hemos recibido la información de adopción, muchas gracias y suerte!";
-    document.body.appendChild(mensaje);
-    mensaje.style.position = "fixed";
-    mensaje.style.top = "20px";
-    mensaje.style.left = "50%";
-    mensaje.style.transform = "translateX(-50%)";
-    mensaje.style.backgroundColor = "lightgreen";
-    mensaje.style.color = "black";
-    mensaje.style.padding = "10px";
-    
-    setTimeout(() => {
-        mensaje.remove();
-        window.close(); 
-    }, 3000);
+    }    
+    window.close();
 }
 const rechazar = () => {
     window.close();

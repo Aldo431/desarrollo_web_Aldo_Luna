@@ -106,7 +106,7 @@ def post_aviso():
             session.add(contactar_por)
     session.commit()
 
-    return redirect(url_for("index"))
+    return redirect(url_for("index", confirmado=1))
 
 @app.route("/estadisticas", methods=["GET"])
 def estadisticas():

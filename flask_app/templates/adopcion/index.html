@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
 <body>
+    {% if request.args.get("confirmado") %}
+    <div id="mensaje-confirmado" style="
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: lightgreen;
+        color: black;
+        padding: 10px;">
+        Hemos recibido la información de adopción, muchas gracias y suerte!
+    </div>
+    {% endif %}
     <div>
         <h1> Bienvenido al Portal de adopción</h1>
         <button type="button" id="btn-agregar-aviso">Agregar aviso</button>
@@ -43,8 +55,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
-    <!-- Scripts -->
     <script>
         const cargarFormulario = () => {
             window.location.href = "{{ url_for('formulario_aviso') }}"
@@ -64,6 +74,14 @@
 
     let btnEstadisticas = document.getElementById("btn-estadisticas");
     btnEstadisticas.addEventListener("click", cargarEstadisticas);
+
+
+    const mensaje = document.getElementById("mensaje-confirmado");
+
+    if (mensaje) {
+        setTimeout(() => mensaje.remove(), 3000);
+    }
+
     </script>
 </body>
 </html>

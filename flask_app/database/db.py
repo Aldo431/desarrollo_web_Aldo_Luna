@@ -1,8 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime # type: ignore
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker # type: ignore
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker, joinedload # type: ignore
 import pymysql # type: ignore
 import json
+
+def utc_menos_3():
+    return datetime.utcnow() - timedelta(hours=3)
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002" 
@@ -43,7 +46,7 @@ class AvisoAdopcion(Base):
     __tablename__ = 'aviso_adopcion'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    fecha_ingreso = Column(DateTime, nullable=False, default=datetime.utcnow)
+    fecha_ingreso = Column(DateTime, nullable=False, default=utc_menos_3)
     comuna_id = Column(Integer, ForeignKey('comuna.id'), nullable=False)
     sector = Column(String(100))
     nombre = Column(String(200), nullable=False)
@@ -114,6 +117,33 @@ def get_last_5_avisos():
     )
     session.close()
     return avisos
+
+def get_all_avisos(page: int = 1, per_page: int = 5):
+    session = SessionLocal()
+
+    offset = (page - 1) * per_page
+
+    total_avisos = session.query(AvisoAdopcion).count()
+
+    avisos = (
+        session.query(AvisoAdopcion)
+        .order_by(AvisoAdopcion.fecha_ingreso.desc())
+        .offset(offset)
+        .limit(per_page)
+        .all()
+    )
+
+    session.close()
+
+    total_pages = (total_avisos + per_page - 1) // per_page
+
+    return avisos, total_pages
+
+def get_aviso_por_id(aviso_id):
+    session = SessionLocal()
+    aviso = session.query(AvisoAdopcion).options(joinedload(AvisoAdopcion.contactos)) .filter(AvisoAdopcion.id == aviso_id).first()
+    session.close()
+    return aviso
 
 def create_aviso(
     fecha_ingreso,

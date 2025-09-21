@@ -8,55 +8,60 @@
 <body>
     <h1>Detalle</h1>
     <div class="detalle">
+        <div class="imagen-container" style="position: relative; display: inline-block;">
+            {% for foto in aviso.fotos %}
+                <div style="position: relative; display: inline-block; margin: 5px;">
+                    <img src="{{ url_for('static', filename='uploads/' ~ foto.nombre_archivo) }}" 
+                        alt="Foto de {{ aviso.tipo }}" width="320" height="240" class="imagenDetalle" style="cursor:pointer;">
+                    <button class="cerrarBtn" hidden style="position: absolute; top: 5px; right: 5px;">Cerrar</button>
+                </div>
+            {% endfor %}
+        </div>
 
-    <div class="imagen-container" style="position: relative; display: inline-block;">
-        <img src="img/perro2.jpg" alt="Perro" width="320" height="240" id="imagenDetalle" style="cursor:pointer;">
-        <button id="cerrarBtn" hidden style="position: absolute; top: 10px; right: 10px;">Cerrar</button>
+        <h2>Información del Aviso</h2>
+        <p><strong>Fecha de publicación:</strong> {{ aviso.fecha_ingreso.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p><strong>Fecha de entrega:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d %H:%M') }}</p>
+
+        <h3>Ubicación</h3>
+        <p><strong>Comuna:</strong> {{ aviso.comuna.nombre }}</p>
+        <p><strong>Sector:</strong> {{ aviso.sector }}</p>
+
+        <h3>Mascota</h3>
+        <p><strong>Cantidad y edad:</strong> {{ aviso.cantidad }} {{ aviso.tipo }}, {{ aviso.edad }} {{ aviso.unidad_medida_texto }}</p>
+
+        <h3>Contacto</h3>
+        {% for contacto in aviso.contactos %}
+            <p><strong>{{ contacto.nombre|capitalize }}:</strong> {{ contacto.identificador }}</p>
+        {% endfor %}
+
+        <h3>Descripción</h3>
+        <p>{{ aviso.descripcion }}</p>
     </div>
 
-    <h2>Información del Aviso</h2>
-    <p><strong>Fecha de publicación:</strong> 2025-08-19 13:45</p>
-    <p><strong>Fecha de entrega:</strong> 2025-08-23 12:00</p>
-
-    <h3>Ubicación</h3>
-    <p><strong>Comuna:</strong> Ñuñoa</p>
-    <p><strong>Sector:</strong> Plaza</p>
-
-    <h3>Mascota</h3>
-    <p><strong>Cantidad y edad:</strong> 1 perro, 12 meses</p>
-
-    <h3>Contacto</h3>
-    <p><strong>Nombre:</strong> Aldo</p>
-    <p><strong>Teléfono:</strong> +569.12345678</p>
-
-    <h3>Descripción</h3>
-    <p>Ella se llama muki, es una perrita amorosa que esta buscando un hogar, contactame si estas interesado en adoptarla.</p>
-    </div>
     <div>
-        <button type="button" id="listado">
-        Volver al listado
-        </button>
-        <button type="button" id="index">
-        Volver al inicio
-        </button>
+        <button type="button" id="listado">Volver al listado</button>
+        <button type="button" id="index">Volver al inicio</button>
     </div>
 <script>
 
-const img = document.getElementById("imagenDetalle");
-const btnCerrar = document.getElementById("cerrarBtn");
-const anchoOriginal = img.width;
-const altoOriginal = img.height;
+const imagenesAviso = document.querySelectorAll(".imagenDetalle"); 
 
-img.addEventListener("click", () => {
-    img.style.width = "800px";
-    img.style.height = "600px";
-    btnCerrar.style.display = "block"; 
-});
+imagenesAviso.forEach((img) => {
+    const btnCerrar = img.nextElementSibling; 
+    const anchoOriginal = img.width;
+    const altoOriginal = img.height;
 
-btnCerrar.addEventListener("click", () => {
-    img.style.width = anchoOriginal + "px";
-    img.style.height = altoOriginal + "px";
-    btnCerrar.style.display = "none";
+    img.addEventListener("click", () => {
+        img.style.width = "800px";
+        img.style.height = "600px";
+        btnCerrar.hidden = false; 
+    });
+
+    btnCerrar.addEventListener("click", () => {
+        img.style.width = anchoOriginal + "px";
+        img.style.height = altoOriginal + "px";
+        btnCerrar.hidden = true;
+    });
 });
 
 const listado = () => {

@@ -46,8 +46,8 @@ def post_aviso():
     error = ""
 
     dt = datetime.strptime(fecha_entrega, "%Y-%m-%dT%H:%M")
-    fecha_entrega = dt.strftime("%Y-%m-%dT%H:%M")
     fotos = request.files.getlist("fotos[]")
+
     for f in fotos:
         if f and not validate_conf_img(f):
             session.close()
@@ -115,8 +115,16 @@ def estadisticas():
 
 @app.route("/listado", methods=["GET"])
 def listado():
-    return render_template("adopcion/listado.html")
+    page = int(request.args.get("page", 1))
+    avisos, total_pages = db.get_all_avisos(page=page, per_page=5)
 
+    return render_template( "adopcion/listado.html",avisos=avisos,page=page,total_pages=total_pages)
+
+@app.route("/detalle",methods=["GET"])
+def detalle():
+    aviso_id = request.args.get("aviso_id")
+    aviso = db.get_aviso_por_id(aviso_id)
+    return render_template("adopcion/detalle.html", aviso=aviso)
 
 @app.route("/", methods=["GET"])
 def index():

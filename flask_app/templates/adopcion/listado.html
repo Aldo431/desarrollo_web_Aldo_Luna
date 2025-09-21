@@ -19,54 +19,35 @@
                 <th>Total fotos</th>
             </tr>
         </thead>
-        <tbody>
-            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
-                <td>2025-08-22 12:00</td>
-                <td>2025-08-23 12:00</td>
-                <td>Santiago</td>
-                <td>Parque O´higgins</td>
-                <td>1 gato<br>2 años</td>
-                <td>Geraldine<br>+569.12345678</td>
-                <td><img src="img/gato4.jpeg" alt="Gato" width="120"></td>
+            <tbody>
+            {% for aviso in avisos %}
+           <tr data-href="{{ url_for('detalle', aviso_id=aviso.id) }}" style="cursor:pointer;">
+                <td>{{ aviso.fecha_ingreso.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ aviso.fecha_entrega.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ aviso.comuna.nombre }}</td>
+                <td>{{ aviso.sector }}</td>
+                <td>{{ aviso.cantidad }} {{ aviso.tipo }}<br>{{ aviso.edad }} {{ aviso.unidad_medida_texto }}</td>
+                <td>{{ aviso.nombre }}<br>{{ aviso.celular }}</td>
+                <td>
+                    {% for foto in aviso.fotos[:5] %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ foto.nombre_archivo) }}" alt="Mascota" width="120">
+                    {% endfor %}
+                </td>
             </tr>
-            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
-                <td>2025-08-21 18:00</td>
-                <td>2025-08-23 12:00</td>
-                <td>Ñuñoa</td>
-                <td>Plaza</td>
-                <td>1 perro<br>2 meses</td>
-                <td>Diego<br>+569.12345678</td>
-                <td><img src="img/perrito1.jpg" alt="Perro" width="120"></td>
-            </tr>
-            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
-                <td>2025-08-20 12:23</td>
-                <td>2025-08-23 12:00</td>
-                <td>Providencia</td>
-                <td>Plaza</td>
-                <td>1 gato<br>8 meses</td>
-                <td>Francisca<br>+569.12345678</td>
-                <td><img src="img/gato2.png" alt="Gato" width="120"></td>
-            </tr>
-            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
-                <td>2025-08-19 13:45</td>
-                <td>2025-08-23 12:00</td>
-                <td>Ñuñoa</td>
-                <td>Plaza</td>
-                <td>1 perro<br>12 meses</td>
-                <td>Aldo<br>+569.12345678</td>
-                <td><img src="img/perro2.jpg" alt="Perro" width="120"></td>
-            </tr>
-            <tr onclick="window.location.href='detalle.html'" style="cursor:pointer;">
-                <td>2025-08-19 10:00</td>
-                <td>2025-08-23 12:00</td>
-                <td>Santiago</td>
-                <td>Beauchef 850, terraza</td>
-                <td>1 gato<br>1 meses</td>
-                <td>Pablo<br>+569.12345678</td>
-                <td><img src="img/gato3.jpg" alt="Gato" width="120"></td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
+    <div class="paginacion">
+    {% if page > 1 %}
+        <a href="{{ url_for('listado', page=page-1) }}">Anterior</a>
+    {% endif %}
+
+    Página {{ page }} de {{ total_pages }}
+
+    {% if page < total_pages %}
+        <a href="{{ url_for('listado', page=page+1) }}">Siguiente</a>
+    {% endif %}
+    </div>
     <div>
         <button type="button" id="btn-volver">Volver al portal</button>
     </div>
@@ -76,6 +57,12 @@ const volverMenu = () => {
 }   
 let btnVolver = document.getElementById("btn-volver");
 btnVolver.addEventListener("click", volverMenu);
+
+document.querySelectorAll("tr[data-href]").forEach(tr => {
+    tr.addEventListener("click", () => {
+        window.location.href = tr.dataset.href;
+    });
+});
 </script>        
 </body>
 </html>

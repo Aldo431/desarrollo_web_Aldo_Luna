@@ -1,10 +1,10 @@
-from flask import Flask, request, render_template, redirect, url_for, session # pyright: ignore[reportMissingImports]
-from utils.validations import validate_conf_img
+from flask import Flask, request, render_template, redirect, url_for, session 
+from utils.validations import validate_conf_img, validate_form
 from database import db
-from werkzeug.utils import secure_filename # pyright: ignore[reportMissingImports]
+from werkzeug.utils import secure_filename 
 from datetime import datetime
 import hashlib
-import filetype  # pyright: ignore[reportMissingImports]
+import filetype 
 import os
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -43,15 +43,35 @@ def post_aviso():
     contactos = request.form.getlist("contacto-info[]")
     tipos_contacto = request.form.getlist("contacto-tipo[]")
     contactos_combinados = list(zip(tipos_contacto, contactos))
-    error = ""
-
-    dt = datetime.strptime(fecha_entrega, "%Y-%m-%dT%H:%M")
     fotos = request.files.getlist("fotos[]")
 
-    for f in fotos:
-        if f and not validate_conf_img(f):
+    error = ""
+
+    data = {
+    "region_id": region_id,
+    "comuna_id": comuna_id,
+    "sector": sector,
+    "nombre": nombre,
+    "email": email,
+    "celular": celular,
+    "tipo": tipo,
+    "cantidad": cantidad,
+    "edad": edad,
+    "unidad_medida": unidad_medida,
+    "fecha_entrega": fecha_entrega,
+    "descripcion": descripcion,
+    "contactos": [
+        {"tipo": tipo, "info": info}
+        for tipo, info in contactos_combinados
+    ],
+    "fotos": fotos}    
+
+    # Validaciones
+
+    is_valid, error = validate_form(data, error)
+
+    if error:
             session.close()
-            error = "Una de las fotos no es válida. Solo se permiten imágenes (png, jpg, jpeg)."
             return render_template(
                 "form/formulario_aviso.html",
                 error=error,
@@ -69,9 +89,12 @@ def post_aviso():
                 descripcion=descripcion,
                 regiones=db.get_all_regiones(),
                 comunas=db.get_all_comunas(),
-                contactos_combinados=contactos_combinados
+                contactos_combinados=contactos_combinados,
+                fotos=fotos
             )
-        
+    
+    # Paso todas las validaciones
+      
     aviso = db.AvisoAdopcion(
         comuna_id=comuna_id,
         sector=sector,

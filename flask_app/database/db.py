@@ -107,6 +107,19 @@ def get_comunas_por_region(region_id):
     session.close()
     return comunas	
 
+def get_region_by_id(region_id):
+    session = SessionLocal()
+    region = session.query(Region).filter_by(id=region_id).first()
+    session.close()
+    return region
+
+
+def get_comuna_by_id(comuna_id):
+    session = SessionLocal()
+    comuna = session.query(Comuna).filter_by(id=comuna_id).first()
+    session.close()
+    return comuna
+
 def get_last_5_avisos():
     session = SessionLocal()
     avisos = (

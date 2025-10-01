@@ -1,7 +1,46 @@
+# Tarea 2 - Desarrollo Web
+
+## Github
+Para la tarea se creó la rama Tarea-2 donde se encuentra todos los archivos relacionados con la tarea 2.
+
+## Descripción
+Esta tarea incluye la implementación flask y jinja en la página creada en la tarea 1.
+
+## Decisiones tomadas
+- La estructura de las carpetas es la siguiente:
+DESARROLLO_WEB_ALDO_LUNA/
+│── flask_app/ 
+│ ├── database/ 
+│ ├── static/ 
+│ │ ├── css/ 
+│ │ ├── js/ 
+│ │ ├── svg/ 
+│ │ └── uploads/ 
+│ ├── templates/
+│ │ ├── adopcion/ 
+│ │ └── form/ 
+│ ├── utils/ 
+│ │ └── validations.py 
+│ └── app.py
+│
+├── img/ 
+├── .gitignore
+├── README.md 
+└── requirements.txt
+
+- Se mantiene casi todo con respecto a la tarea 1, solamente se realiza un cambio cuando se muestra el mensaje
+al subirse el formulario a la base de datos, ya que antes se hacía en la pestaña que se abre al querer enviar el
+formulario, pero ahora se muestra en la página principal luego de validar y subir el formulario.
+- Al hacerse las validaciones por parte del servidor, si existe algún error se genera un mensaje de error que se muestra por sobre el formulario indicando que campo esta mal.
+- Para la validación de las imágenes, se valida que se haya cargado una imagen, que tenga una extensión correcta,
+que no tenga un nombre mal formado y además que su tamaño máximo sea de 5 MB.
+- En las validaciones por parte del servidor, si un campo está mal, agrega un mensaje de error y recarga el formulario con los valores correctos ya ingresados y reinicia el valor que estaba malo, además que por temas de implementación cada vez que se recarga el formulario no se guardan las imágenes ingresadas pero todos los demas campos del formulario se guardan en caso de que se haya ingresado un valor.
+- Todas las funcionalidades de la portada, listado y detalle está funcionando ahora con la base de datos.
+
 # Tarea 1 - Desarrollo Web
 
 ## Github
-Para la tarea se creó la rama Tarea-1 donde se encuentra todos los archivos relacionados con la tarea 1
+Para la tarea se creó la rama Tarea-1 donde se encuentra todos los archivos relacionados con la tarea 1.
 
 ## Descripción
 Esta tarea incluye la implementación de una página HTML con CSS.

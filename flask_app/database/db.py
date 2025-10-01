@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime # type: ignore
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker, joinedload # type: ignore
-import pymysql # type: ignore
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime 
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker, joinedload 
+import pymysql 
 import json
 
-def utc_menos_3():
-    return datetime.utcnow() - timedelta(hours=3)
+def date_time_now():
+    return datetime.now()
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002" 
@@ -46,7 +46,7 @@ class AvisoAdopcion(Base):
     __tablename__ = 'aviso_adopcion'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    fecha_ingreso = Column(DateTime, nullable=False, default=utc_menos_3)
+    fecha_ingreso = Column(DateTime, nullable=False, default=date_time_now)
     comuna_id = Column(Integer, ForeignKey('comuna.id'), nullable=False)
     sector = Column(String(100))
     nombre = Column(String(200), nullable=False)
@@ -158,102 +158,3 @@ def get_aviso_por_id(aviso_id):
     session.close()
     return aviso
 
-def create_aviso(
-    fecha_ingreso,
-    comuna_id,
-    sector,
-    nombre,
-    email,
-    celular,
-    tipo,
-    cantidad,
-    edad,
-    unidad_medida,
-    fecha_entrega,
-    descripcion
-):
-    session = SessionLocal()
-    nuevo_aviso = AvisoAdopcion(
-        fecha_ingreso=fecha_ingreso,
-        comuna_id=comuna_id,
-        sector=sector,
-        nombre=nombre,
-        email=email,
-        celular=celular,
-        tipo=tipo,
-        cantidad=cantidad,
-        edad=edad,
-        unidad_medida=unidad_medida,
-        fecha_entrega=fecha_entrega,
-        descripcion=descripcion
-    )
-    session.add(nuevo_aviso)
-    session.commit()
-    aviso_id = nuevo_aviso.id
-    session.close()
-    return aviso_id
-
-
-def add_foto(aviso_id, ruta_archivo, nombre_archivo):
-    session = SessionLocal()
-    nueva_foto = Foto(
-        ruta_archivo=ruta_archivo,
-        nombre_archivo=nombre_archivo,
-        actividad_id=aviso_id
-    )
-    session.add(nueva_foto)
-    session.commit()
-    session.close()
-
-
-def add_contacto(aviso_id, nombre, identificador):
-    session = SessionLocal()
-    nuevo_contacto = ContactarPor(
-        nombre=nombre,
-        identificador=identificador,
-        actividad_id=aviso_id
-    )
-    session.add(nuevo_contacto)
-    session.commit()
-    session.close()
-
-def create_aviso_completo(
-    fecha_ingreso,
-    comuna_id,
-    sector,
-    nombre,
-    email,
-    celular,
-    tipo,
-    cantidad,
-    edad,
-    unidad_medida,
-    fecha_entrega,
-    descripcion,
-    fotos=None,
-    contactos=None
-):
-    aviso_id = create_aviso(
-        fecha_ingreso,
-        comuna_id,
-        sector,
-        nombre,
-        email,
-        celular,
-        tipo,
-        cantidad,
-        edad,
-        unidad_medida,
-        fecha_entrega,
-        descripcion
-    )
-
-    if fotos:
-        for nombre_archivo in fotos:
-            add_foto(aviso_id, f"uploads/{nombre_archivo}", nombre_archivo)
-
-    if contactos:
-        for c in contactos:
-            add_contacto(aviso_id, c["nombre"], c["identificador"])
-
-    return aviso_id    

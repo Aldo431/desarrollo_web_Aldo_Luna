@@ -68,29 +68,28 @@ def post_aviso():
 
     # Validaciones
 
-    is_valid, error = validate_form(data, error)
+    list_form, error = validate_form(data, error)
 
     if error:
             session.close()
             return render_template(
                 "form/formulario_aviso.html",
                 error=error,
-                region_id=region_id,
-                comuna_id=comuna_id,
-                sector=sector,
-                nombre=nombre,
-                email=email,
-                celular=celular,
-                tipo=tipo,
-                cantidad=cantidad,
-                edad=edad,
-                unidad_medida=unidad_medida,
-                fecha_entrega=fecha_entrega,
-                descripcion=descripcion,
+                region_id=list_form["region_id"],
+                comuna_id=list_form["comuna_id"],
+                sector=list_form["sector"],
+                nombre=list_form["nombre"],
+                email=list_form["email"],
+                celular=list_form["celular"],
+                tipo=list_form["tipo"],
+                cantidad=list_form["cantidad"],
+                edad=list_form["edad"],
+                unidad_medida=list_form["unidad_medida"],
+                fecha_entrega=list_form["fecha_entrega"],
+                descripcion=list_form["descripcion"],
                 regiones=db.get_all_regiones(),
                 comunas=db.get_all_comunas(),
                 contactos_combinados=contactos_combinados,
-                fotos=fotos
             )
     
     # Paso todas las validaciones

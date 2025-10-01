@@ -58,7 +58,7 @@ def validate_description(desc):
     return len(desc) <= 500
 
 def validate_unidad_medida(unidad):
-    OPCIONES_VALIDAS = {"meses", "años"}
+    OPCIONES_VALIDAS = {"m", "a"}
     return unidad in OPCIONES_VALIDAS
 
 def validate_fecha_entrega(fecha_str):
@@ -117,44 +117,58 @@ def validate_form(lista_form, error):
     val , error_region_comuna = validate_region_comuna(lista_form["region_id"], lista_form["comuna_id"])
     if not val:
         error += error_region_comuna
+        lista_form["region_id"] = ""
+        lista_form["comuna_id"] = ""
 
     if not validate_sector(lista_form["sector"]):
         error += "El sector debe tener un máximo de 100 caracteres."
+        lista_form["sector"] = ""
 
     if not validate_name(lista_form["nombre"]):
         error += "El nombre es obligatorio y debe tener entre 3 y 200 caracteres."
-        
+        lista_form["nombre"] = ""
+
     if not validate_email(lista_form["email"]):
         error += "El email es obligatorio y debe ser válido."
+        lista_form["email"] = ""
 
     if not validate_phone(lista_form["celular"]):
         error += "El teléfono es obligatorio y debe tener el formato +XXX.XXXXXXXX."
-
+        lista_form["celular"] = ""
     if not validate_contactos(lista_form["contactos"]):
         error += "El contacto debe tener entre 4 y 50 caracteres."
+        for contacto in lista_form["contactos"]:
+            contacto["info"] = ""
+            contacto["tipo"] = ""
 
     if not validate_tipo_mascota(lista_form["tipo"]):
         error += "Debe seleccionar un tipo de mascota válido."
+        lista_form["tipo"] = ""
 
     if not validate_amount(lista_form["cantidad"]):
         error += "La cantidad es obligatoria y debe ser mayor a 0."
+        lista_form["cantidad"] = ""
 
     if not validate_age(lista_form["edad"]):
         error += "La edad es obligatoria y debe ser mayor a 0."
+        lista_form["edad"] = ""
 
     if not validate_unidad_medida(lista_form["unidad_medida"]):
         error += "Debe seleccionar una unidad de medida válida."
+        lista_form["unidad_medida"] = ""
 
     if not validate_description(lista_form["descripcion"]):
         error += "La descripción debe tener un máximo de 500 caracteres."
+        lista_form["descripcion"] = ""
 
     if not validate_fecha_entrega(lista_form["fecha_entrega"]):
         error += "La fecha de entrega debe ser al menos 3 horas en el futuro."
+        lista_form["fecha_entrega"] = ""
 
     if not validate_photos(lista_form["fotos"]):
         error += "Una de las fotos no es válida. Solo se permiten imágenes (png, jpg, jpeg), y el tamaño máximo es 5MB."
 
     if error:
-        return False, error
+        return lista_form, error
     
-    return True, ""
+    return lista_form, ""

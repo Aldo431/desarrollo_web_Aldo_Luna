@@ -35,7 +35,7 @@ formulario, pero ahora se muestra en la página principal luego de validar y sub
 - Para la validación de las imágenes, se valida que se haya cargado una imagen, que tenga una extensión correcta,
 que no tenga un nombre mal formado y además que su tamaño máximo sea de 5 MB.
 - En las validaciones por parte del servidor, si un campo está mal, agrega un mensaje de error y recarga el formulario con los valores correctos ya ingresados y reinicia el valor que estaba malo, además que por temas de implementación cada vez que se recarga el formulario no se guardan las imágenes ingresadas pero todos los demas campos del formulario se guardan en caso de que se haya ingresado un valor.
-- Todas las funcionalidades de la portada, listado y detalle está funcionando ahora con la base de datos.
+- Todas las funcionalidades de la portada, listado, detalle y formulario están funcionando ahora con la base de datos.
 
 # Tarea 1 - Desarrollo Web
 

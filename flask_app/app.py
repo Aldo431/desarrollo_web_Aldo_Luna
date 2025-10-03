@@ -35,9 +35,21 @@ def post_aviso():
     email = request.form.get("email")
     celular = request.form.get("tel")
     tipo = request.form.get("mascota")
-    cantidad = int(request.form.get("cantidad"))
-    edad = int(request.form.get("edad"))
-    unidad_medida = request.form.get("unidad")[0]  
+    cantidad_str = request.form.get("cantidad")
+    if not cantidad_str:  
+        cantidad = None 
+    else:
+        cantidad = int(cantidad_str)
+    edad_str = request.form.get("edad")
+    if not edad_str:  
+        edad = None 
+    else:
+        edad = int(edad_str)
+    unidad_medida = request.form.get("unidad") 
+    if unidad_medida:
+        unidad_medida = unidad_medida[0]
+    else:
+        unidad_medida = None
     fecha_entrega = request.form.get("fecha-disponible")
     descripcion = request.form.get("descripcion")
     contactos = request.form.getlist("contacto-info[]")

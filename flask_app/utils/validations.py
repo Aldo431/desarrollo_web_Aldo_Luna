@@ -107,6 +107,8 @@ def validate_conf_img(conf_img):
     return True
 
 def validate_photos(fotos):
+    if not fotos or all(f.filename == '' for f in fotos):
+        return False
     for f in fotos:
         if f and not validate_conf_img(f):
             return False
@@ -166,7 +168,7 @@ def validate_form(lista_form, error):
         lista_form["fecha_entrega"] = ""
 
     if not validate_photos(lista_form["fotos"]):
-        error += "Una de las fotos no es válida. Solo se permiten imágenes (png, jpg, jpeg), y el tamaño máximo es 5MB."
+        error += "Una de las fotos no es válida o no se seleccionó ninguna. Solo se permiten imágenes (png, jpg, jpeg), y el tamaño máximo es 5MB."
 
     if error:
         return lista_form, error

@@ -160,17 +160,6 @@ def detalle():
     aviso = db.get_aviso_por_id(aviso_id)
     return render_template("adopcion/detalle.html", aviso=aviso)
 
-@app.route("/agregar_comentario", methods=["POST"])
-def agregar_comentario():
-    aviso_id = request.args.get("aviso_id")
-    aviso = db.get_aviso_por_id(aviso_id)
-    nombre = request.form.get("nombre")
-    contenido = request.form.get("contenido")
-    fecha = datetime.now()
-
-    db.agregar_comentario(aviso_id, nombre, contenido, fecha)
-
-    return redirect(url_for("detalle", aviso_id=aviso_id))
 
 @app.route("/", methods=["GET"])
 def index():

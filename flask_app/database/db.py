@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime 
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime, TIMESTAMP 
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker, joinedload 
 import pymysql 
 import json
@@ -62,6 +62,7 @@ class AvisoAdopcion(Base):
     comuna = relationship("Comuna", back_populates="avisos",  lazy="joined")
     fotos = relationship("Foto", back_populates="aviso", cascade="all, delete", lazy="joined")
     contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete")
+    comentarios = relationship("Comentario", back_populates="aviso")
     
     @property 
     def unidad_medida_texto(self): 
@@ -86,6 +87,17 @@ class ContactarPor(Base):
     actividad_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
 
     aviso = relationship("AvisoAdopcion", back_populates="contactos")
+
+class Comentario(Base):
+    __tablename__ = "comentario"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(TIMESTAMP, nullable=False, default=datetime.now)
+    aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
+
+    aviso = relationship("AvisoAdopcion", back_populates="comentarios")
 
 # --- Database Functions ---
 
@@ -158,3 +170,14 @@ def get_aviso_por_id(aviso_id):
     session.close()
     return aviso
 
+def agregar_comentario(aviso_id, nombre, texto, fecha):
+    session = SessionLocal()
+    comentario = Comentario(
+        aviso_id=aviso_id,
+        nombre=nombre,
+        texto=texto,
+        fecha=fecha
+    )
+    session.add(comentario)
+    session.commit()
+    session.close()

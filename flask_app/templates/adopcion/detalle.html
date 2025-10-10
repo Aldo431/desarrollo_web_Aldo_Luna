@@ -37,11 +37,26 @@
         <h3>Descripción</h3>
         <p>{{ aviso.descripcion }}</p>
     </div>
+    <div>
+        <h1>Comentarios</h1>
+    </div>
 
+    <div>   
+        <h2>Agregar Comentario</h2>
+        <form method="POST" action="{{ url_for('agregar_comentario', aviso_id=aviso.id) }}">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <label for="contenido">Comentario:</label>
+            <textarea id="contenido" name="contenido" rows="4" cols="50" required></textarea>
+
+            <input type="submit" value="Agregar Comentario">
+        </form>
+    </div>
     <div>
         <button type="button" id="listado">Volver al listado</button>
         <button type="button" id="index">Volver al inicio</button>
     </div>
+
 <script>
 
 const imagenesAviso = document.querySelectorAll(".imagenDetalle"); 

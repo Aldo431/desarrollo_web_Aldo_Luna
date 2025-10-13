@@ -237,3 +237,24 @@ def get_avisos_por_dia():
 
     data = [{"fecha": str(fecha), "cantidad": cantidad} for fecha, cantidad in resultados]
     return data
+
+def get_comentarios_por_aviso(aviso_id):
+    session = SessionLocal()
+    comentarios = (
+        session.query(Comentario)
+        .filter_by(aviso_id=aviso_id)
+        .order_by(Comentario.fecha.desc())
+        .all()
+    )
+    session.close()
+    return [
+        {"nombre": c.nombre, "texto": c.texto, "fecha": c.fecha.strftime("%Y-%m-%d %H:%M")}
+        for c in comentarios
+    ]
+
+def agregar_comentario(aviso_id, nombre, texto):
+    session = SessionLocal()
+    nuevo = Comentario(nombre=nombre, texto=texto, aviso_id=aviso_id, fecha=datetime.now())
+    session.add(nuevo)
+    session.commit()
+    session.close()

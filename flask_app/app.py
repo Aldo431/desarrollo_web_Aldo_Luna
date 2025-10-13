@@ -175,6 +175,25 @@ def get_avisos_dia_route():
     data = db.get_avisos_por_dia()
     return jsonify({"status": "ok", "data": data})
 
+@app.route("/get-comentarios/<int:aviso_id>")
+def get_comentarios(aviso_id):
+    comentarios = db.get_comentarios_por_aviso(aviso_id)
+    return jsonify({"status": "ok", "data": comentarios})
+
+@app.route("/add-comentario/<int:aviso_id>", methods=["POST"])
+def add_comentario(aviso_id):
+    data = request.get_json()
+    nombre = data.get("nombre", "").strip()
+    texto = data.get("texto", "").strip()
+
+    if not (3 <= len(nombre) <= 80):
+        return jsonify({"status": "error", "msg": "Nombre inválido"}), 400
+    if len(texto) < 5 or len(texto) > 300:
+        return jsonify({"status": "error", "msg": "Comentario inválido"}), 400
+
+    db.agregar_comentario(aviso_id, nombre, texto)
+    return jsonify({"status": "ok"})
+
 @app.route("/", methods=["GET"])
 def index():
     avisos = db.get_last_5_avisos()

@@ -34,22 +34,23 @@
             <p><strong>{{ contacto.nombre|capitalize }}:</strong> {{ contacto.identificador }}</p>
         {% endfor %}
 
-        <h3>Descripción</h3>
+        <h3>Descripción</h3>    
         <p>{{ aviso.descripcion }}</p>
     </div>
-    <div>
+    <div id="comentarios" data-aviso-id="{{ aviso.id }}">
         <h1>Comentarios</h1>
+        <div id="comentarios-listado"></div>
     </div>
 
     <div>   
         <h2>Agregar Comentario</h2>
-        <form >
+        <form id="form-comentario" novalidate>
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
+            <input type="text" id="nombre" name="nombre" minlength="3" maxlength="80">
             <label for="contenido">Comentario:</label>
-            <textarea id="contenido" name="contenido" rows="4" cols="50" required></textarea>
-
+            <textarea id="contenido" name="contenido" rows="4" cols="50" minlength="5"></textarea>
             <input type="submit" value="Agregar Comentario">
+            <div id="comentario-error" style="color: red; margin-top: 5px;"></div>
         </form>
     </div>
     <div>
@@ -58,6 +59,82 @@
     </div>
 
 <script>
+
+const avisoId = document.getElementById("comentarios").dataset.avisoId;
+const nombreInput = document.getElementById("nombre");
+const contenidoInput = document.getElementById("contenido");
+const formComentario = document.getElementById("form-comentario");
+
+const fetchComentarios = () => {
+  fetch(`/get-comentarios/${avisoId}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "ok") {
+        const contenedor = document.getElementById("comentarios-listado");
+        contenedor.innerHTML = "";
+        data.data.forEach(c => {
+          const div = document.createElement("div");
+          div.classList.add("comentario");
+          div.innerHTML = `
+            <p><strong>${c.nombre}</strong> (${c.fecha})</p>
+            <p>${c.texto}</p>
+            <hr>
+          `;
+          contenedor.appendChild(div);
+        });
+      }
+    });
+};
+
+formComentario.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const nombre = nombreInput.value.trim();
+  const contenido = contenidoInput.value.trim();
+
+  let valid = true;
+  if (nombre.length < 3 || nombre.length > 80) {
+    nombreInput.style.border = "2px solid red";
+    valid = false;
+  } else {
+    nombreInput.style.border = "";
+  }
+
+  if (contenido.length < 5 || contenido.length > 300) {
+    contenidoInput.style.border = "2px solid red";
+    valid = false;
+  } else {
+    contenidoInput.style.border = "";
+  }
+
+  if (!valid) return;
+
+  const errorDiv = document.getElementById("comentario-error");
+  errorDiv.textContent = ""; 
+
+  fetch(`/add-comentario/${avisoId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre, texto: contenido })
+  })
+  .then(res => res.json()
+      .then(data => ({status: res.status, body: data})))
+  .then(({status, body}) => {
+    if (status >= 400) {
+      errorDiv.textContent = body.msg || "Error al agregar comentario";
+    } else if (body.status === "ok") {
+      formComentario.reset();
+      nombreInput.style.border = "";
+      contenidoInput.style.border = "";
+      fetchComentarios();
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    errorDiv.textContent = "Error en la conexión con el servidor";
+  });
+});
+
+document.addEventListener("DOMContentLoaded", fetchComentarios);
 
 const imagenesAviso = document.querySelectorAll(".imagenDetalle"); 
 
@@ -78,6 +155,7 @@ imagenesAviso.forEach((img) => {
         btnCerrar.hidden = true;
     });
 });
+
 
 const listado = () => {
     window.location.href = "{{ url_for('listado') }}";

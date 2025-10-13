@@ -1,3 +1,17 @@
+# Tarea 3 - Desarrollo Web
+
+## Github
+Para la tarea se creó la rama Tarea-3 donde se encuentra todos los archivos relacionados con la tarea 3.
+
+## Descripción
+Se implementa la comunicación asíncrona con el servidor usando fetch para obtener y enviar datos dinámicamente sin recargar la página para la página creada en la tarea 2.
+
+## Decisiones tomadas
+
+- Para la comunicación asíncrona use la función fetch.
+- Para los gráficos utilice la biblioteca Highcharts.
+- Para el formulario de comentarios se siguió una implementación parecida para los errores usada en el formulario de adopción, por parte de Javascript marca la casilla en color rojo si está mal y por parte del servidor si ve un error, manda el error en un json y sale un mensaje en el mismo formulario indicando que está mal.
+
 # Tarea 2 - Desarrollo Web
 
 ## Github

@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime, TIMESTAMP 
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime, TIMESTAMP, func, extract
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker, joinedload 
 import pymysql 
 import json
@@ -181,3 +181,59 @@ def agregar_comentario(aviso_id, nombre, texto, fecha):
     session.add(comentario)
     session.commit()
     session.close()
+
+def get_avisos_por_tipo():
+    session = SessionLocal()
+    resultados = (
+        session.query(AvisoAdopcion.tipo, func.count().label("cantidad"))
+        .group_by(AvisoAdopcion.tipo)
+        .all()
+    )
+    session.close()
+
+    data = [{"tipo": tipo, "cantidad": cantidad} for tipo, cantidad in resultados]
+    return data
+
+def get_avisos_por_mes_y_tipo():
+    session = SessionLocal()
+    resultados = (
+        session.query(
+            extract("month", AvisoAdopcion.fecha_ingreso).label("mes"),
+            AvisoAdopcion.tipo,
+            func.count().label("cantidad")
+        )
+        .group_by("mes", AvisoAdopcion.tipo)
+        .order_by("mes")
+        .all()
+    )
+    session.close()
+
+    conteos = {}
+    for mes, tipo, cantidad in resultados:
+        conteos.setdefault(mes, {})[tipo] = cantidad
+
+    tipos = ["perro", "gato"] 
+    data = []
+    for m in range(1, 13):
+        entrada = {"mes": m}
+        for t in tipos:
+            entrada[t] = conteos.get(m, {}).get(t, 0)
+        data.append(entrada)
+
+    return data
+
+def get_avisos_por_dia():
+    session = SessionLocal()
+    resultados = (
+        session.query(
+            func.date(AvisoAdopcion.fecha_ingreso).label("fecha"),
+            func.count(AvisoAdopcion.id).label("cantidad")
+        )
+        .group_by(func.date(AvisoAdopcion.fecha_ingreso))
+        .order_by(func.date(AvisoAdopcion.fecha_ingreso))
+        .all()
+    )
+    session.close()
+
+    data = [{"fecha": str(fecha), "cantidad": cantidad} for fecha, cantidad in resultados]
+    return data

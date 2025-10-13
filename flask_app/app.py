@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session 
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify 
 from utils.validations import validate_conf_img, validate_form
 from database import db
 from werkzeug.utils import secure_filename 
@@ -160,6 +160,20 @@ def detalle():
     aviso = db.get_aviso_por_id(aviso_id)
     return render_template("adopcion/detalle.html", aviso=aviso)
 
+@app.route("/get-avisos-tipo")
+def get_avisos_tipo():
+    data = db.get_avisos_por_tipo()
+    return jsonify({"status": "ok", "data": data})
+
+@app.route("/get-avisos-mes")
+def get_avisos_mes():
+    data = db.get_avisos_por_mes_y_tipo()
+    return jsonify({"status": "ok", "data": data})
+
+@app.route("/get-avisos-dia")
+def get_avisos_dia_route():
+    data = db.get_avisos_por_dia()
+    return jsonify({"status": "ok", "data": data})
 
 @app.route("/", methods=["GET"])
 def index():

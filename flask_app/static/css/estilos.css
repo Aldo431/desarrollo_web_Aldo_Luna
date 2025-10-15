@@ -68,7 +68,8 @@ textarea {
     resize: vertical;
 }
 
-button {
+button,
+input[type="submit"] {
     cursor: pointer;
     padding: 10px 15px;
     border: none;
@@ -79,7 +80,8 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+button:hover,
+input[type="submit"]:hover  {
     background-color: #1bbcce;
 }
 

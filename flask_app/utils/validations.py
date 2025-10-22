@@ -174,3 +174,17 @@ def validate_form(lista_form, error):
         return lista_form, error
     
     return lista_form, ""
+
+def validar_comentario(nombre: str, texto: str):
+    if not nombre or not texto:
+        return {"status": "error", "msg": "Campos vacíos"}
+    if not (3 <= len(nombre) <= 80):
+        return {"status": "error", "msg": "Nombre inválido"}
+    if len(texto) < 5 or len(texto) > 300:
+        return {"status": "error", "msg": "Comentario inválido"}
+
+    patron_sospechoso = re.compile(r"<\s*script|<\s*iframe|on\w+\s*=", re.IGNORECASE)
+    if patron_sospechoso.search(texto) or patron_sospechoso.search(nombre):
+        return {"status": "error", "msg": "Contenido no permitido"}
+
+    return {"status": "ok", "msg": "Validación correcta"}

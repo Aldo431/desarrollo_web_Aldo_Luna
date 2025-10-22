@@ -1,5 +1,7 @@
+import html
+import re
 from flask import Flask, request, render_template, redirect, url_for, session, jsonify 
-from utils.validations import validate_conf_img, validate_form
+from utils.validations import validar_comentario, validate_conf_img, validate_form
 from database import db
 from werkzeug.utils import secure_filename 
 from datetime import datetime
@@ -186,10 +188,12 @@ def add_comentario(aviso_id):
     nombre = data.get("nombre", "").strip()
     texto = data.get("texto", "").strip()
 
-    if not (3 <= len(nombre) <= 80):
-        return jsonify({"status": "error", "msg": "Nombre inválido"}), 400
-    if len(texto) < 5 or len(texto) > 300:
-        return jsonify({"status": "error", "msg": "Comentario inválido"}), 400
+    resultado = validar_comentario(nombre, texto)
+    if resultado["status"] != "ok":
+        return jsonify(resultado), 400
+    
+    nombre = html.escape(nombre)
+    texto = html.escape(texto)
 
     db.agregar_comentario(aviso_id, nombre, texto)
     return jsonify({"status": "ok"})

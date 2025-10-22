@@ -145,3 +145,13 @@ th, td {
 th {
     background-color: #959494;
 }
+
+#comentarios-listado {
+  max-width: 600px; 
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+  white-space: normal; 
+}
+.comentario p {
+  margin: 0 0 5px 0; 
+}

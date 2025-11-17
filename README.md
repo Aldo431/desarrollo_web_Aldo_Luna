@@ -9,6 +9,7 @@ Se implementa una aplicación web con el framework springboot y usando comunicac
 
 ## Decisiones tomadas
 
+- En la carpeta tarea_4 se encuentra todo lo relacionado a la tarea 4.
 - Para esta tarea se esta usando versión de Java 25 y springboot v3.5.7.
 - Para esta tarea se creó un solo html que es index.html, que contiene todo para la tarea 4.
 - Para la comunicación asíncrona use la función fetch.

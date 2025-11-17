@@ -72,4 +72,17 @@ public class AvisoAdopcionDTO {
     public Double getNotaPromedio() {
         return notaPromedio;
     }
+    
+    public String getCantidadFormateada() {
+        String animalPlural = cantidad == 1 ? tipo.toString() : tipo.toString() + "s";
+        return cantidad + " " + animalPlural;
+    }
+    public String getEdadFormateada() {
+        if (edad < 12) {
+            return edad + (edad == 1 ? " mes" : " meses");
+        } else {
+            int años = edad / 12;
+            return años + (años == 1 ? " año" : " años");
+        }
+    }
 }

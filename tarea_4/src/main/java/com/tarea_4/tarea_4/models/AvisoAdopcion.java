@@ -72,8 +72,9 @@ public class AvisoAdopcion {
     @OneToMany(mappedBy = "aviso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContactarPor> contactos;
 
-    @OneToMany(mappedBy = "aviso")
-    private List<Nota> notas;   
+    @OneToMany(mappedBy = "aviso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Nota> notas;
+
     public AvisoAdopcion() {
     }
 

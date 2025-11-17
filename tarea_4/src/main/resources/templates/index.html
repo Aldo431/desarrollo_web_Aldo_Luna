@@ -37,18 +37,20 @@ async function cargarAvisos() {
         const avisos = await resp.json();
 
         const tbody = document.querySelector("tbody");
-        tbody.innerHTML = "";  
+        tbody.innerHTML = "";
 
         avisos.forEach(a => {
             const fila = `
-                <tr>
+                <tr id="fila-${a.id}">
                     <td>${a.id}</td>
                     <td>${a.fechaIngreso?.replace("T", " ")}</td>
                     <td>${a.sector || "-"}</td>
-                    <td>${a.cantidad} ${a.tipo} <br> ${a.edad} ${a.unidadMedida}</td>
+                    <td>${a.cantidadFormateada} <br> ${a.edadFormateada}</td>
                     <td>${a.comunaNombre}</td>
-                    <td class="center">${a.notaPromedio !== null ? a.notaPromedio.toFixed(1) : "-"}</td>
-                    <td><button onclick="evaluar(${a.id})">Evaluar</button></td>
+                    <td class="center">${a.notaPromedio !== 0.0 ? a.notaPromedio.toFixed(1) : "-"}</td>
+                    <td id="acciones-${a.id}">
+                        <button onclick="evaluar(${a.id})">Evaluar</button>
+                    </td>
                 </tr>
             `;
             tbody.innerHTML += fila;
@@ -58,6 +60,43 @@ async function cargarAvisos() {
     }
 }
 
+function evaluar(id) {
+    const celdaAcciones = document.getElementById(`acciones-${id}`);
+
+    celdaAcciones.innerHTML = `
+        <select id="nota-${id}">
+            <option value="" disabled selected>Seleccione</option>
+            ${[1,2,3,4,5,6,7].map(n => `<option value="${n}">${n}</option>`).join("")}
+        </select>
+        <br>
+        <button onclick="enviarEvaluacion(${id})">Enviar</button>
+    `;
+}
+
+async function enviarEvaluacion(id) {
+    const nota = document.getElementById(`nota-${id}`).value;
+
+    if (!nota) {
+        alert("Debe seleccionar una nota.");
+        return;
+    }
+
+    try {
+        const resp = await fetch(`/api/avisos/${id}/evaluar`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({ nota })
+        });
+
+        if (!resp.ok) {
+            throw new Error("Error al enviar la evaluación");
+        }
+        cargarAvisos();
+
+    } catch (err) {
+        console.error("Error enviando evaluación:", err);
+    }
+}
 
 cargarAvisos();
 </script>

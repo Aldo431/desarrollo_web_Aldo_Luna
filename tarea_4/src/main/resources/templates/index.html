@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Listado de avisos de adopción</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    table { border-collapse: collapse; width: 100%; max-width: 1000px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #e6e6e6; text-align: left; }
+    th { background: #fafafa; font-weight: 600; }
+    .center { text-align: center; }
+  </style>
+</head>
+<body>
+  <h2>Listado de avisos de adopción</h2>
+
+  <table aria-label="Listado de avisos de adopción">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fecha publicación</th>
+        <th>Sector</th>
+        <th>Cantidad Tipo <br> Edad </th>
+        <th>Comuna</th>
+        <th>Nota</th>
+        <th></th>
+      </tr>
+    </thead>
+  <tbody>
+  </tbody>
+  </table>
+</body>
+<script>
+async function cargarAvisos() {
+    try {
+        const resp = await fetch('/api/avisos');
+        const avisos = await resp.json();
+
+        const tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";  
+
+        avisos.forEach(a => {
+            const fila = `
+                <tr>
+                    <td>${a.id}</td>
+                    <td>${a.fechaIngreso?.replace("T", " ")}</td>
+                    <td>${a.sector || "-"}</td>
+                    <td>${a.cantidad} ${a.tipo} <br> ${a.edad} ${a.unidadMedida}</td>
+                    <td>${a.comunaNombre}</td>
+                    <td class="center">${a.notaPromedio !== null ? a.notaPromedio.toFixed(1) : "-"}</td>
+                    <td><button onclick="evaluar(${a.id})">Evaluar</button></td>
+                </tr>
+            `;
+            tbody.innerHTML += fila;
+        });
+    } catch (err) {
+        console.error("Error cargando avisos:", err);
+    }
+}
+
+
+cargarAvisos();
+</script>
+</html>

@@ -26,6 +26,10 @@ public class AppService {
     }
     public void guardarEvaluacion(Long avisoId, int notaValor) {
 
+        if (!Nota.validateNota(notaValor)) {
+            throw new IllegalArgumentException("La nota debe estar entre 1 y 7");
+        }
+
         AvisoAdopcion aviso = avisoRepository.findById(Objects.requireNonNull(avisoId))
                 .orElseThrow(() -> new RuntimeException("Aviso no encontrado"));
 

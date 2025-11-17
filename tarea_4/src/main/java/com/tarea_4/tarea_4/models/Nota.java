@@ -35,4 +35,7 @@ public class Nota {
     public AvisoAdopcion getAviso() {
         return aviso;
     }
+    public static boolean validateNota(Integer nota) {
+    return nota != null && nota >= 1 && nota <= 7;
+    }
 }

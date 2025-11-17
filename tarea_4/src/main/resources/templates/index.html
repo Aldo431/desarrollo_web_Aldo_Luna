@@ -77,7 +77,7 @@ async function enviarEvaluacion(id) {
     const nota = document.getElementById(`nota-${id}`).value;
 
     if (!nota) {
-        alert("Debe seleccionar una nota.");
+        alert("Debe seleccionar una nota válida.");
         return;
     }
 
@@ -94,6 +94,7 @@ async function enviarEvaluacion(id) {
         cargarAvisos();
 
     } catch (err) {
+        alert("Debe seleccionar una nota válida.");
         console.error("Error enviando evaluación:", err);
     }
 }

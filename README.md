@@ -1,3 +1,20 @@
+# Tarea 4 - Desarrollo Web
+
+## Github
+Para la tarea se creó la rama Tarea-4 donde se encuentra todos los archivos relacionados con la tarea 4.
+
+## Descripción
+
+Se implementa una aplicación web con el framework springboot y usando comunicación asíncrona.
+
+## Decisiones tomadas
+
+- Para esta tarea se esta usando versión de Java 25 y springboot v3.5.7.
+- Para esta tarea se creó un solo html que es index.html, que contiene todo para la tarea 4.
+- Para la comunicación asíncrona use la función fetch.
+- Las creación de carpetas tiene la misma disposición que la vista en auxiliar.
+- Se hace la validación de la nota por parte del cliente y del servidor, si no pasa la validación, se envía una alerta indicando que la nota no es válida.
+
 # Tarea 3 - Desarrollo Web
 
 ## Github
